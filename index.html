@@ -72,8 +72,8 @@ button{-webkit-tap-highlight-color:transparent}
  #jump{min-height:52px}
 }
 </style></head><body>
-<canvas id="weatherCanvas" aria-hidden="true"></canvas><div id="raceBanner"></div><div id="climateTag">🌸 SPRING · SUNNY MORNING</div><div id="ui"><div id="top"><div class="pill"><small>DISTANCE</small><b id="distance">0</b></div><div class="pill"><small>OVERTAKES</small><b id="overtakes">0</b></div><div class="pill"><small>CARROTS</small><b id="coins">0</b></div><div class="pill"><small>BEST</small><b id="best">0</b></div></div><div id="stamina"><div id="fill"></div></div><div id="status">HOP THROUGH THE DERBY!</div><div id="msg"></div><div id="pad"><span></span><button data-dir="forward">▲</button><span></span><button data-dir="left">◀</button><button data-dir="back">▼</button><button data-dir="right">▶</button></div><button id="jump">⚡ SPRINT</button></div>
-<div id="menu"><div class="panel"><div style="font-size:65px">🏇🏆</div><h1 id="title">GALLOP<br>HOP</h1><p id="description">DERBY CROSSING<br>Crossy Road meets the Grand National.<br>Hop through endless racing lanes, dodge galloping rivals, draft for stamina, collect carrots, and survive the wildest racecourse ever.</p><p style="font-size:13px">WASD / Arrows: hop • Space: sprint<br>Mobile: swipe or use the buttons</p><div id="raceProgram"><strong>🏁 NEXT RACE</strong><div id="programDetails">Preparing the race program…</div></div><div id="stablePicker"><div class="stableTitle">🐴 YOUR RACING STABLE</div><div id="coatChoices"></div><div id="coatHint">Coats are cosmetic. All horses race identically.</div></div><button id="start">START RACING →</button><button id="trophyOpen">🏆 TROPHY CABINET</button><button id="dailyOpen">📅 DAILY DERBY CHALLENGES</button></div></div><div id="trophyModal"><div id="trophyPanel"><h2>🏆 Derby Trophy Cabinet</h2><div id="trophySummary"></div><div id="trophyList"></div><button id="trophyClose">CLOSE</button></div></div><div id="dailyModal"><div id="dailyPanel"><h2>📅 Daily Derby Challenges</h2><p id="dailySummary"></p><div id="dailyList"></div><button id="dailyClose">CLOSE</button></div></div><div id="error"></div>
+<canvas id="weatherCanvas" aria-hidden="true"></canvas><div id="raceBanner"></div><div id="climateTag">🌸 SPRING · SUNNY MORNING</div><div id="ui"><div id="top"><div class="pill"><small>DISTANCE</small><b id="distance">0</b></div><div class="pill"><small>OVERTAKES</small><b id="overtakes">0</b></div><div class="pill"><small>CARROTS</small><b id="coins">0</b></div><div class="pill"><small>BEST</small><b id="best">0</b></div></div><div id="stamina"><div id="fill"></div></div><div id="status">HOP THROUGH THE DERBY!</div><div id="msg"></div><div id="pad"><span></span><button data-dir="forward">▲</button><span></span><button data-dir="left">◀</button><button data-dir="back">▼</button><button data-dir="right">▶</button></div></div>
+<div id="menu"><div class="panel"><div style="font-size:65px">🏇🏆</div><h1 id="title">GALLOP<br>HOP</h1><p id="description">DERBY CROSSING<br>Crossy Road meets the Grand National.<br>Hop through endless racing lanes, dodge galloping rivals, draft for stamina, collect carrots, and survive the wildest racecourse ever.</p><p style="font-size:13px">WASD / Arrows: hop<br>Mobile: swipe or use the buttons</p><div id="raceProgram"><strong>🏁 NEXT RACE</strong><div id="programDetails">Preparing the race program…</div></div><div id="stablePicker"><div class="stableTitle">🐴 YOUR RACING STABLE</div><div id="coatChoices"></div><div id="coatHint">Coats are cosmetic. All horses race identically.</div></div><button id="start">START RACING →</button><button id="trophyOpen">🏆 TROPHY CABINET</button><button id="dailyOpen">📅 DAILY DERBY CHALLENGES</button></div></div><div id="trophyModal"><div id="trophyPanel"><h2>🏆 Derby Trophy Cabinet</h2><div id="trophySummary"></div><div id="trophyList"></div><button id="trophyClose">CLOSE</button></div></div><div id="dailyModal"><div id="dailyPanel"><h2>📅 Daily Derby Challenges</h2><p id="dailySummary"></p><div id="dailyList"></div><button id="dailyClose">CLOSE</button></div></div><div id="error"></div>
 <script>
 (()=>{'use strict';
 const $=id=>document.getElementById(id);
@@ -92,7 +92,7 @@ function box(parent,material,x,y,z,w,h,d){const o=new THREE.Mesh(cube,material);
 function orb(parent,material,x,y,z,sx,sy= sx,sz=sx){const o=new THREE.Mesh(sphereGeo,material);o.position.set(x,y,z);o.scale.set(sx,sy,sz);o.castShadow=true;parent.add(o);return o}
 function group(parent,x=0,y=0,z=0){let g=new THREE.Group();g.position.set(x,y,z);parent.add(g);return g}
 const WORLD_W=23,STEP=2.5,HALF=11,KEEP_BEHIND=13,KEEP_AHEAD=27;
-let rows=new Map(),player,hero,heroVisual,heroTargetAngle=0,celebrateUntil=0,celebratedRow=0,high=0,cameraProgress=0,run=false,dead=false,coins=0,overtakes=0,stamina=100,elapsed=0,hopT=0,hopStart=null,hopEnd=null,lastMove=0,boost=0,aiPassed=new Set(),particles=[],msgTimeout=0;
+let rows=new Map(),player,hero,heroVisual,heroTargetAngle=0,celebrateUntil=0,celebratedRow=0,high=0,cameraProgress=0,run=false,dead=false,coins=0,overtakes=0,stamina=100,elapsed=0,hopT=0,hopStart=null,hopEnd=null,lastMove=0,aiPassed=new Set(),particles=[],msgTimeout=0;
 const moveQueue=[];const MAX_QUEUED_MOVES=3;
 let best=0;try{best=Number(localStorage.getItem('gallophop-best-v2'))||0}catch(e){}$('best').textContent=best;
 const palette=[0x9a542f,0x4c4035,0xe2c49a,0x8a8a88,0x784d3a,0xd4a055],silks=[0xe74545,0x1d83e0,0xf2d045,0x8a55c5,0x31bba2];
@@ -595,8 +595,8 @@ let dailyRunOvertakes=0,dailyRunCarrots=0;
 $('dailyOpen').onclick=()=>{renderDaily();$('dailyModal').classList.add('visible')};
 $('dailyClose').onclick=()=>$('dailyModal').classList.remove('visible');
 $('dailyModal').addEventListener('click',e=>{if(e.target===$('dailyModal'))$('dailyModal').classList.remove('visible')});
-function start(){announcedIntensityBand=-1;rerollVisualWorld();chooseProgram();resetDailyIfNeeded();dailyRunOvertakes=0;dailyRunCarrots=0;for(const p of derbyConfetti)scene.remove(p.mesh);derbyConfetti=[];moveQueue.length=0;for(let row of rows.values())disposeRow(row);rows.clear();if(hero)scene.remove(hero.root);hero=horse(scene,coatOptions[chosenCoat].coat,coatOptions[chosenCoat].shirt);player={x:0,row:0};hero.root.position.set(0,0,0);hero.root.rotation.y=0;heroTargetAngle=0;celebrateUntil=0;celebratedRow=0;high=0;cameraProgress=0;elapsed=0;hopT=0;lastMove=0;boost=0;coins=0;overtakes=0;stamina=100;aiPassed.clear();run=true;dead=false;ensureRows();$('menu').style.display='none';showRaceBanner('🏁 '+raceProgram.name+' · Watch for '+raceProgram.featured.name+'!',4);updateHUD();setCamera(true)}
-function updateHUD(){if(run){checkTrophies();updateDaily()}$('distance').textContent=high;$('overtakes').textContent=overtakes;$('coins').textContent=coins;$('best').textContent=Math.max(best,high);$('fill').style.width=stamina+'%';$('status').textContent=boost>0?'⚡ TURBO GALLOP!':stamina<20?'LOW STAMINA — COLLECT CARROTS!':'🏇 THE GRAND DERBY CROSSING'}
+function start(){announcedIntensityBand=-1;rerollVisualWorld();chooseProgram();resetDailyIfNeeded();dailyRunOvertakes=0;dailyRunCarrots=0;for(const p of derbyConfetti)scene.remove(p.mesh);derbyConfetti=[];moveQueue.length=0;for(let row of rows.values())disposeRow(row);rows.clear();if(hero)scene.remove(hero.root);hero=horse(scene,coatOptions[chosenCoat].coat,coatOptions[chosenCoat].shirt);player={x:0,row:0};hero.root.position.set(0,0,0);hero.root.rotation.y=0;heroTargetAngle=0;celebrateUntil=0;celebratedRow=0;high=0;cameraProgress=0;elapsed=0;hopT=0;lastMove=0;coins=0;overtakes=0;stamina=100;aiPassed.clear();run=true;dead=false;ensureRows();$('menu').style.display='none';showRaceBanner('🏁 '+raceProgram.name+' · Watch for '+raceProgram.featured.name+'!',4);updateHUD();setCamera(true)}
+function updateHUD(){if(run){checkTrophies();updateDaily()}$('distance').textContent=high;$('overtakes').textContent=overtakes;$('coins').textContent=coins;$('best').textContent=Math.max(best,high);$('fill').style.width=stamina+'%';$('status').textContent=stamina<20?'LOW STAMINA — COLLECT CARROTS!':'🏇 THE GRAND DERBY CROSSING'}
 function finish(reason){if(!run)return;run=false;dead=true;trophyData.runs++;checkTrophies();persistTrophies();if(high>best){best=high;try{localStorage.setItem('gallophop-best-v2',best)}catch(e){}}$('title').innerHTML='RACE<br>OVER';$('description').innerHTML=reason+'<br><br>Distance: <b>'+high+'</b> · Overtakes: <b>'+overtakes+'</b> · Carrots: <b>'+coins+'</b><br>Best distance: <b>'+best+'</b>';$('start').textContent='RACE AGAIN →';$('menu').style.display='flex';chooseProgram();renderStable();updateHUD()}
 function move(dir){if(!run)return;
 if(hopT>0){if(moveQueue.length<MAX_QUEUED_MOVES)moveQueue.push(dir);return}
@@ -605,11 +605,10 @@ nx=Math.max(-4,Math.min(4,nx));if(nx===player.x&&nr===player.row){if(dir==='left
 heroTargetAngle=dir==='forward'?0:dir==='back'?Math.PI:dir==='left'?Math.PI/2:-Math.PI/2;hopStart={x:player.x,z:-player.row*STEP};hopEnd={x:nx,z:-nr*STEP};player.x=nx;player.row=nr;hopT=.001;lastMove=elapsed;if(nr>high){high=nr;ensureRows();
 const band=high>=50?Math.floor((high-50)/35):-1;
 if(band>=0&&band!==announcedIntensityBand){announcedIntensityBand=band;showRaceBanner(intensityLabel(high),3.1)}
-if(high>0&&high%25===0&&high!==celebratedRow){celebratedRow=high;celebrateUntil=elapsed+1.2;launchConfetti();flash('🏆 '+high+' ROW DERBY MILESTONE!')}}stamina=Math.max(0,stamina-(boost>0?1.1:.7));updateHUD()}
-function sprint(){if(!run||stamina<22)return;stamina-=22;boost=2.5;flash('⚡ TURBO GALLOP!');updateHUD()}
+if(high>0&&high%25===0&&high!==celebratedRow){celebratedRow=high;celebrateUntil=elapsed+1.2;launchConfetti();flash('🏆 '+high+' ROW DERBY MILESTONE!')}}stamina=Math.max(0,stamina-.7);updateHUD()}
 const directions={ArrowUp:'forward',KeyW:'forward',ArrowDown:'back',KeyS:'back',ArrowLeft:'left',KeyA:'left',ArrowRight:'right',KeyD:'right'};
-window.addEventListener('keydown',e=>{if(directions[e.code]){e.preventDefault();move(directions[e.code])}else if(e.code==='Space'){e.preventDefault();sprint()}});
-$('start').onclick=start;$('jump').onclick=sprint;document.querySelectorAll('[data-dir]').forEach(b=>b.addEventListener('pointerdown',e=>{e.preventDefault();move(b.dataset.dir)}));
+window.addEventListener('keydown',e=>{if(directions[e.code]){e.preventDefault();move(directions[e.code])}});
+$('start').onclick=start;document.querySelectorAll('[data-dir]').forEach(b=>b.addEventListener('pointerdown',e=>{e.preventDefault();move(b.dataset.dir)}));
 let touch=null;renderer.domElement.addEventListener('pointerdown',e=>{if(e.pointerType==='mouse'&&e.button!==0)return;touch={id:e.pointerId,x:e.clientX,y:e.clientY};try{renderer.domElement.setPointerCapture(e.pointerId)}catch(_){}});
 renderer.domElement.addEventListener('pointercancel',()=>{touch=null});
 renderer.domElement.addEventListener('pointerup',e=>{if(!touch||touch.id!==e.pointerId)return;const dx=e.clientX-touch.x,dy=e.clientY-touch.y;touch=null;if(Math.max(Math.abs(dx),Math.abs(dy))<24)move('forward');else if(Math.abs(dx)>Math.abs(dy))move(dx>0?'right':'left');else move(dy>0?'back':'forward')});
@@ -625,15 +624,15 @@ function intensityLabel(row){
  const tier=Math.floor((row-50)/35);
  return ['🏇 THE PACK IS PICKING UP!','🔥 STAMPEDE STAKES!','🚜 MAINTENANCE MAYHEM!','⚡ LIGHTNING DERBY!','🌪️ FULL GALLOP FRENZY!','👑 LEGENDARY CHAOS!'][Math.min(5,tier)];
 }
-function tick(dt){elapsed+=dt;boost=Math.max(0,boost-dt);stamina=Math.min(100,stamina+dt*(boost>0?1:3.8));
-if(hopT>0){hopT+=dt/(boost>0?.105:.16);const t=Math.min(hopT,1);hero.root.position.x=THREE.MathUtils.lerp(hopStart.x*STEP,hopEnd.x*STEP,t);hero.root.position.z=THREE.MathUtils.lerp(hopStart.z,hopEnd.z,t);hero.root.position.y=Math.sin(t*Math.PI)*.68;if(t>=1){hopT=0;hero.root.position.y=0;if(moveQueue.length)move(moveQueue.shift())}}
-animateHorse(hero,elapsed,hopT>0?(boost>0?1.3:1):.18);
+function tick(dt){elapsed+=dt;stamina=Math.min(100,stamina+dt*3.8);
+if(hopT>0){hopT+=dt/.16;const t=Math.min(hopT,1);hero.root.position.x=THREE.MathUtils.lerp(hopStart.x*STEP,hopEnd.x*STEP,t);hero.root.position.z=THREE.MathUtils.lerp(hopStart.z,hopEnd.z,t);hero.root.position.y=Math.sin(t*Math.PI)*.68;if(t>=1){hopT=0;hero.root.position.y=0;if(moveQueue.length)move(moveQueue.shift())}}
+animateHorse(hero,elapsed,hopT>0?1:.18);
 // Turn along the shortest arc; no changes to the movement or collision positions.
 const angleDelta=Math.atan2(Math.sin(heroTargetAngle-hero.root.rotation.y),Math.cos(heroTargetAngle-hero.root.rotation.y));
 hero.root.rotation.y+=angleDelta*Math.min(1,dt*14);
 if(hero.rider){
 const celebrating=elapsed<celebrateUntil;
-hero.rider.rotation.x=celebrating?-.22:THREE.MathUtils.lerp(hero.rider.rotation.x,boost>0?-.24:hopT>0?-.09:0,Math.min(1,dt*9));
+hero.rider.rotation.x=celebrating?-.22:THREE.MathUtils.lerp(hero.rider.rotation.x,hopT>0?-.09:0,Math.min(1,dt*9));
 hero.rider.position.y=1.7+(celebrating?Math.sin(elapsed*18)*.1:0);
 }
 

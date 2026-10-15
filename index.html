@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,maximum-scale=1,user-scalable=no">
-<title>Gallop Hop — iPhone & Desktop</title>
+<title>Gallop Hop — Steeplechase, Hay Bales & Carrot Trails</title>
 <meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"><meta name="theme-color" content="#17392b">
 <script src="https://cdn.jsdelivr.net/npm/three@0.160.1/build/three.min.js"></script>
 <style>
@@ -36,7 +36,7 @@
 #dailyClose{margin-top:12px;padding:10px 18px;background:#e7b552;border:0;border-radius:8px;font-weight:900;cursor:pointer}
 #raceProgram{margin:10px auto;padding:10px;border:1px solid #e3c17a;border-radius:10px;background:#1a382b;color:#f8e5bc;font-size:12px;line-height:1.6;text-align:left;max-width:365px}
 #raceProgram strong{color:#ffdb79}#raceBanner{position:fixed;top:174px;left:50%;transform:translateX(-50%);z-index:3;padding:7px 12px;border:1px solid #f2d28e;border-radius:9px;background:#173429e8;color:#ffebc1;font-size:12px;font-weight:800;text-align:center;pointer-events:none;display:none;max-width:90vw}
-#weatherCanvas{position:fixed;inset:0;z-index:1;pointer-events:none;width:100%;height:100%}#climateTag{position:fixed;top:138px;left:50%;transform:translateX(-50%);z-index:3;background:#173429cc;border:1px solid #ffffff55;border-radius:10px;padding:5px 10px;font-size:11px;font-weight:800;white-space:nowrap;pointer-events:none;text-shadow:0 1px #0008}@media(max-width:540px){#climateTag{top:131px;font-size:10px}}
+#weatherCanvas{position:fixed;inset:0;z-index:1;pointer-events:none;width:100%;height:100%}@media(max-width:540px){}
 /* iPhone / Android responsive controls and safe areas */
 html,body{width:100%;height:100%;height:100dvh;overscroll-behavior:none;-webkit-user-select:none;-webkit-touch-callout:none}
 button{-webkit-tap-highlight-color:transparent}
@@ -71,9 +71,46 @@ button{-webkit-tap-highlight-color:transparent}
  #pad button{min-width:48px;min-height:48px}
  #jump{min-height:52px}
 }
+
+/* Presentation-only crash vignette, independent of gameplay state. */
+#crashShow{display:none;margin:4px auto 12px;min-height:76px;position:relative;overflow:hidden}
+#crashShow.visible{display:block}
+#crashHorse{display:inline-block;font-size:52px;transform-origin:50% 70%;animation:crashTumble 1.1s ease-out both}
+#crashStars{position:absolute;left:50%;top:3px;transform:translateX(-50%);font-size:21px;animation:starWobble .65s ease-in-out infinite alternate}
+#crashQuip{font-size:12px;color:#ffe4a3;font-weight:800;padding:4px}
+@keyframes crashTumble{0%{transform:translateY(-35px) rotate(-38deg) scale(.65);opacity:0}35%{transform:translateY(0) rotate(27deg) scale(1.18);opacity:1}65%{transform:rotate(-13deg)}100%{transform:rotate(0) scale(1)}}
+@keyframes starWobble{from{transform:translateX(-50%) rotate(-10deg)}to{transform:translateX(-50%) rotate(12deg)}}
+@media(prefers-reduced-motion:reduce){#crashHorse,#crashStars{animation:none}}
+#showdownChoice{margin:8px auto;display:flex;align-items:center;justify-content:center;gap:8px;flex-wrap:wrap}#modeToggle{background:#28543d;color:#ffe8aa;border:2px solid #9cc69c;border-radius:9px;padding:8px 11px;cursor:pointer;font-weight:900}#modeHelp{font-size:11px;color:#cce4c8}@media(max-width:500px){#rivalHud{top:122px!important;font-size:10px!important}}
+
+#shopOpen{margin-top:9px;border:2px solid #f6d48c;border-radius:9px;background:#dfb361;color:#382615;font-weight:900;padding:9px;cursor:pointer;width:100%}
+#stableBank{font-weight:900;color:#ffdf90;margin:7px 0;font-size:13px}
+#shopOverlay{position:fixed;inset:0;z-index:9;background:#0c1d16e9;align-items:center;justify-content:center;padding:14px;pointer-events:auto}
+#shopPanel{background:#234635;color:#fff1c8;border:3px solid #deb974;border-radius:18px;padding:16px;width:min(510px,98vw);max-height:calc(100dvh - 30px);overflow:auto;box-shadow:0 15px 70px #0008}
+#shopPanel h3{font-size:15px;margin:13px 0 7px}
+.shopHead{display:flex;align-items:center;justify-content:space-between;gap:12px}
+.shopHead button,.shopItem{cursor:pointer;border:2px solid #a6c49b;border-radius:8px;background:#325b42;color:#fff2ce;padding:9px;font-weight:800}
+.shopGrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:7px}
+.shopItem{font-size:12px;text-align:left}
+.shopItem:active{background:#66844d}
+
+/* Optional course guide and compact trail counter; existing HUD positions stay unchanged. */
+#courseGuide{margin:10px auto;max-width:365px;text-align:left;font-size:12px;
+ color:#dcf0df;background:#15392bc9;border:1px solid #7cab8c;border-radius:10px;padding:10px}
+#courseGuide summary{cursor:pointer;font-weight:800;color:#f5dc99}
+#courseGuide p{font-size:12px;line-height:1.55;margin:7px 0;color:#dcf0df}
+#trailStatus{position:fixed;right:calc(12px + env(safe-area-inset-right,0px));
+ bottom:calc(22px + env(safe-area-inset-bottom,0px));z-index:3;pointer-events:none;
+ width:160px;max-width:40vw;padding:9px 10px;border:1px solid #9cdec1;border-radius:10px;
+ background:#123829ec;color:#ffedbd;font-size:11px;font-weight:800;text-align:center;line-height:1.45}
+#trailStatus[hidden]{display:none}
 </style></head><body>
-<canvas id="weatherCanvas" aria-hidden="true"></canvas><div id="raceBanner"></div><div id="climateTag">🌸 SPRING · SUNNY MORNING</div><div id="ui"><div id="top"><div class="pill"><small>DISTANCE</small><b id="distance">0</b></div><div class="pill"><small>OVERTAKES</small><b id="overtakes">0</b></div><div class="pill"><small>CARROTS</small><b id="coins">0</b></div><div class="pill"><small>BEST</small><b id="best">0</b></div></div><div id="status">HOP THROUGH THE DERBY!</div><div id="msg"></div><div id="pad"><span></span><button data-dir="forward">▲</button><span></span><button data-dir="left">◀</button><button data-dir="back">▼</button><button data-dir="right">▶</button></div></div>
-<div id="menu"><div class="panel"><div style="font-size:65px">🏇🏆</div><h1 id="title">GALLOP<br>HOP</h1><p id="description">DERBY CROSSING<br>Crossy Road meets the Grand National.<br>Hop through endless racing lanes, dodge galloping rivals, draft for stamina, collect carrots, and survive the wildest racecourse ever.</p><p style="font-size:13px">WASD / Arrows: hop<br>Mobile: swipe or use the buttons</p><div id="raceProgram"><strong>🏁 NEXT RACE</strong><div id="programDetails">Preparing the race program…</div></div><div id="stablePicker"><div class="stableTitle">🐴 YOUR RACING STABLE</div><div id="coatChoices"></div><div id="coatHint">Coats are cosmetic. All horses race identically.</div></div><button id="start">START RACING →</button><button id="trophyOpen">🏆 TROPHY CABINET</button><button id="dailyOpen">📅 DAILY DERBY CHALLENGES</button></div></div><div id="trophyModal"><div id="trophyPanel"><h2>🏆 Derby Trophy Cabinet</h2><div id="trophySummary"></div><div id="trophyList"></div><button id="trophyClose">CLOSE</button></div></div><div id="dailyModal"><div id="dailyPanel"><h2>📅 Daily Derby Challenges</h2><p id="dailySummary"></p><div id="dailyList"></div><button id="dailyClose">CLOSE</button></div></div><div id="error"></div>
+<canvas id="weatherCanvas" aria-hidden="true"></canvas><div id="raceBanner"></div><div id="ui"><div id="top"><div class="pill"><small>DISTANCE</small><b id="distance">0</b></div><div class="pill"><small>OVERTAKES</small><b id="overtakes">0</b></div><div class="pill"><small>CARROTS</small><b id="coins">0</b></div><div class="pill"><small>BEST</small><b id="best">0</b></div></div><div id="status">HOP THROUGH THE DERBY!</div><div id="msg"></div><div id="trailStatus" role="status" aria-live="polite" hidden></div><div id="rivalHud" style="display:none;position:absolute;top:135px;left:50%;transform:translateX(-50%);background:#15352cdd;border:1px solid #e4d1a1;border-radius:9px;padding:7px 12px;font-size:12px;font-weight:800;white-space:nowrap">🤖 Rival: 0</div><div id="pad"><span></span><button data-dir="forward">▲</button><span></span><button data-dir="left">◀</button><button data-dir="back">▼</button><button data-dir="right">▶</button></div></div>
+<div id="shopOverlay" style="display:none" role="dialog" aria-modal="true" aria-label="Stable Shop"><div id="shopPanel"><div class="shopHead"><strong>🥕 THE RACING STABLE SHOP</strong><button id="shopClose" type="button">✕ CLOSE</button></div><p>Carrot Bank: 🥕 <b id="shopBalance">0</b><br><small>All items are cosmetic. Collected carrots save immediately.</small></p><h3>🐴 Horse Coats</h3><div class="shopGrid" id="shop-coats"></div><h3>🎽 Jockey Outfits</h3><div class="shopGrid" id="shop-outfits"></div><h3>🏇 Saddle Accessories</h3><div class="shopGrid" id="shop-saddles"></div></div></div><div id="menu"><div class="panel"><div style="font-size:65px">🏇🏆</div><h1 id="title">GALLOP<br>HOP</h1><p id="description">DERBY CROSSING<br>Crossy Road meets the Grand National.<br>Hop through endless racing lanes, dodge galloping rivals, draft for stamina, collect carrots, and survive the wildest racecourse ever.</p><p style="font-size:13px">WASD / Arrows: hop<br>Mobile: swipe or use the buttons</p><details id="courseGuide"><summary>NEW COURSE GUIDE</summary>
+<p><b>Distance 50+: rolling hay.</b> Bales roll, slow down and pause. Wait for a gap; touching one ends the run.</p>
+<p><b>Distance 100+: hurdles.</b> Follow the mint arrows and hop <b>forward</b> to clear a hurdle automatically. Sideways or backward entry crashes. No new button.</p>
+<p><b>Distance 108+: carrot trails.</b> Follow the numbered 1–5 carrots for a <b>+5 bank bonus</b>. Look before crossing traffic. Trails are optional; collected carrots stay yours.</p>
+</details><div id="raceProgram"><strong>🏁 NEXT RACE</strong><div id="programDetails">Preparing the race program…</div></div><div id="stablePicker"><div class="stableTitle">🐴 YOUR RACING STABLE</div><div id="coatChoices"></div><div id="stableBank">🥕 Carrot Bank: <b id="bankBalance">0</b></div><div id="coatHint">Coats are cosmetic. All horses race identically.</div><button id="shopOpen" type="button">🥕 STABLE SHOP — COATS, OUTFITS & SADDLES</button></div><div id="crashShow" aria-live="polite"><span id="crashStars">✨ ⭐ ✨</span><div id="crashHorse">🐴💫</div><div id="crashQuip"></div></div><div id="showdownChoice"><button id="modeToggle" type="button">🏇 MODE: ENDLESS</button><span id="modeHelp">Classic endless derby</span></div><button id="start">START RACING →</button><button id="trophyOpen">🏆 TROPHY CABINET</button><button id="dailyOpen">📅 DAILY DERBY CHALLENGES</button></div></div><div id="trophyModal"><div id="trophyPanel"><h2>🏆 Derby Trophy Cabinet</h2><div id="trophySummary"></div><div id="trophyList"></div><button id="trophyClose">CLOSE</button></div></div><div id="dailyModal"><div id="dailyPanel"><h2>📅 Daily Derby Challenges</h2><p id="dailySummary"></p><div id="dailyList"></div><button id="dailyClose">CLOSE</button></div></div><div id="error"></div>
 <script>
 (()=>{'use strict';
 const $=id=>document.getElementById(id);
@@ -87,6 +124,7 @@ const ambient=new THREE.HemisphereLight(0xf0f9ff,0x4b7040,2.2);scene.add(ambient
 const sun=new THREE.DirectionalLight(0xfff2c8,2.6);sun.position.set(-22,42,24);sun.castShadow=true;sun.shadow.mapSize.set(1024,1024);sun.shadow.camera.left=-42;sun.shadow.camera.right=42;sun.shadow.camera.top=48;sun.shadow.camera.bottom=-48;sun.shadow.normalBias=.04;scene.add(sun);
 const M=(color,roughness=.85)=>new THREE.MeshStandardMaterial({color,roughness});
 const mats={white:M(0xf6f3e9),black:M(0x292b2d),wood:M(0x9a6035),gold:M(0xffd35c),grass:M(0x579c48),mud:M(0x815239),dirt:M(0xb17b50),skin:M(0xe8b18b),leaf:M(0x397c3f),blue:M(0x2776c2),red:M(0xc33e43)};
+const carrotOrange=M(0xf16a1c),goldenCarrot=M(0xffd13d);
 const cube=new THREE.BoxGeometry(1,1,1),sphereGeo=new THREE.SphereGeometry(1,10,8);
 function box(parent,material,x,y,z,w,h,d){const o=new THREE.Mesh(cube,material);o.position.set(x,y,z);o.scale.set(w,h,d);o.castShadow=true;o.receiveShadow=true;parent.add(o);return o}
 function orb(parent,material,x,y,z,sx,sy= sx,sz=sx){const o=new THREE.Mesh(sphereGeo,material);o.position.set(x,y,z);o.scale.set(sx,sy,sz);o.castShadow=true;parent.add(o);return o}
@@ -120,7 +158,13 @@ h.tail.rotation.z=Math.sin(v*.6)*.22;
 h.tail.rotation.x=-.4+Math.sin(v*.7)*.14;
 if(h.rider){h.rider.rotation.z=Math.sin(v*.5)*.025*intensity;}
 }
-function tree(parent,x,z,leafMaterial=mats.leaf){box(parent,mats.wood,x,.85,z,.33,1.7,.34);orb(parent,leafMaterial,x,2.05,z,.85,.95,.85)}
+function tree(parent,x,z,leafMaterial=mats.leaf){
+ const shadow=new THREE.Mesh(new THREE.CircleGeometry(STEP*.32,16),
+   new THREE.MeshBasicMaterial({color:0x233923,transparent:true,opacity:.25,depthWrite:false}));
+ shadow.rotation.x=-Math.PI/2;shadow.position.set(x,.045,z);parent.add(shadow);
+ box(parent,mats.wood,x,.85,z,.33,1.7,.34);
+ orb(parent,leafMaterial,x,2.05,z,.85,.95,.85);
+}
 function rail(parent,x,z,length=STEP){box(parent,mats.white,x,.68,z,.12,.13,length);box(parent,mats.white,x,.25,z,.1,.12,length);for(let zz of [-length/2+.2,length/2-.2])box(parent,mats.white,x,.44,z+zz,.15,.9,.16)}
 function startingGate(parent,direction){
 const root=group(parent);
@@ -301,7 +345,7 @@ function drawAtmosphere(dt,now){
  const timeName=night>.65?'MOONLIT NIGHT':sunset>.4?'GOLDEN HOUR':daylight>.65?'SUNNY DAY':'SOFT MORNING';
  const weather=weatherForRow(high);
  const text=climate.icon+' '+climate.name+' · '+timeName+' · '+weather;
- if(text!==lastClimateText){$('climateTag').textContent=text;lastClimateText=text}
+ if(text!==lastClimateText){lastClimateText=text}
  const w=weatherCanvas.width,h=weatherCanvas.height;
  wc.clearRect(0,0,w,h);
  const density=weather==='CLEAR'?0:weather==='OVERCAST'?0:weather==='SNOW'?68:weather==='DRIZZLE'?55:weather==='BREEZY'?18:weather==='LEAVES'?36:weather==='PETALS'?29:22;
@@ -416,12 +460,507 @@ function countryside(g,i){
    }
  }
 }
+
+// VISUAL-ONLY TRACKSIDE LIFE. Everything is placed well outside the white rails.
+// These objects never enter the obstacle or collision arrays.
+const vignetteMats={
+ timber:M(0x865d40),straw:M(0xe6c16b),cloth:M(0xc66b65),
+ cream:M(0xf0ddac),dark:M(0x514337),blue:M(0x86b9d5),
+ flower:M(0xeaa7c0),ribbon:M(0xf2e3c0),bush:M(0x6d9c53)
+};
+function scenicLife(g,i){
+ const anim=[];
+ if(i<8||i%11!==3)return anim;
+ const side=(i%2?1:-1),x=side*(26+visualRandom(i,510)*5);
+ const kind=Math.floor(visualRandom(i,511)*3);
+ if(kind===0){ // Pony peacefully grazing in a fenced paddock.
+   for(const dz of [-.95,.95]){
+     box(g,mats.white,x,.67,dz,5,.14,.13);
+     for(const dx of [-2,0,2])box(g,mats.white,x+dx,.45,dz,.12,.9,.14);
+   }
+   const pony=horse(g,0xd4a055,0x83b9b0);
+   pony.root.position.set(x,.03,0);
+   pony.root.scale.setScalar(.62);
+   pony.root.rotation.y=Math.PI*.18;
+   anim.push({type:'pony',obj:pony,phase:i*.37});
+ }else if(kind===1){ // Stable worker beside a haystack.
+   for(let j=0;j<3;j++)box(g,vignetteMats.straw,x+(j-1)*.8,.45,0,.78,.85,.95);
+   const worker=group(g,x+2.3,0,0);
+   box(worker,vignetteMats.blue,0,1.03,0,.65,.85,.4);
+   orb(worker,mats.skin,0,1.68,0,.31);
+   box(worker,vignetteMats.dark,0,1.95,0,.7,.18,.55);
+   const arm=box(worker,vignetteMats.blue,.46,1.15,0,.2,.66,.25);
+   anim.push({type:'worker',arm,phase:i*.3});
+ }else{ // Photographer with camera and flash.
+   const photographer=group(g,x,0,0);
+   box(photographer,vignetteMats.cloth,0,1.05,0,.6,.85,.45);
+   orb(photographer,mats.skin,0,1.7,0,.3);
+   box(photographer,vignetteMats.dark,0,2.05,-.35,.62,.4,.43);
+   const flash=orb(photographer,mats.white,0,2.07,-.61,.1);
+   anim.push({type:'photographer',flash,phase:i*.29});
+ }
+ return anim;
+}
+const surprises=[];
+function scenicSurprise(g,i){
+ // Uncommon sky features, outside track and well above gameplay.
+ if(i<24||i%43!==17)return null;
+ const side=visualRandom(i,620)>.5?1:-1;
+ const x=side*(35+visualRandom(i,621)*12);
+ const item=group(g,x,0,0);
+ const kind=visualRandom(i,622)>.5?'balloon':'airplane';
+ if(kind==='balloon'){
+   orb(item,M(0xe58d75),0,13,0,1.6,1.9,1.6);
+   box(item,vignetteMats.cream,0,10.5,0,1.1,.85,.95);
+   for(const dx of [-.5,.5])for(const dz of [-.4,.4])
+     box(item,vignetteMats.ribbon,dx/1.2,11.55,dz,.055,1.65,.055);
+   box(item,M(0xf2c66c),0,13.6,1.3,.65,1.4,.1);
+ }else{
+   box(item,vignetteMats.cream,0,14,0,3.4,.38,.55);
+   box(item,vignetteMats.blue,-.4,14,0,.75,.13,4);
+   box(item,vignetteMats.cloth,1.1,14.4,0,.6,.8,.15);
+   box(item,vignetteMats.ribbon,-2.5,14,0,2,.7,.12);
+ }
+ return {obj:item,kind,phase:i*.27};
+}
+function animateScenery(time){
+ for(const row of rows.values()){
+   if(row.scenes)for(const a of row.scenes){
+     if(a.type==='pony')animateHorse(a.obj,time*.5,.12);
+     if(a.type==='worker')a.arm.rotation.z=Math.sin(time*2+a.phase)*.32;
+     if(a.type==='photographer'){
+       const blinking=Math.sin(time*1.5+a.phase)>.985;
+       a.flash.scale.setScalar(blinking?.24:.08);
+     }
+   }
+   if(row.surprise){
+     const v=row.surprise;
+     v.obj.position.y=Math.sin(time*.55+v.phase)*.5;
+     v.obj.rotation.y=Math.sin(time*.23+v.phase)*.09;
+   }
+ }
+}
+// Capped transient particles: simple unlit blocks with shared geometry/materials.
+const fxMats={
+ dust:new THREE.MeshBasicMaterial({color:0xd9b58a,transparent:true,opacity:.72,depthWrite:false}),
+ mud:new THREE.MeshBasicMaterial({color:0x916346,transparent:true,opacity:.8,depthWrite:false}),
+ carrot:new THREE.MeshBasicMaterial({color:0xffd55b,transparent:true,opacity:.9,depthWrite:false})
+};
+const fxGeometry=new THREE.BoxGeometry(.2,.2,.2),effects=[];
+function puff(kind,x,y,z,count=5){
+ const material=fxMats[kind];
+ for(let i=0;i<count;i++){
+   if(effects.length>=70){const old=effects.shift();scene.remove(old.mesh)}
+   const mesh=new THREE.Mesh(fxGeometry,material);
+   mesh.position.set(x+(Math.random()-.5)*.7,y,z+(Math.random()-.5)*.7);
+   scene.add(mesh);
+   effects.push({mesh,life:.3+Math.random()*.38,max:.68,
+     vx:(Math.random()-.5)*(kind==='carrot'?4:2),
+     vy:kind==='carrot'?2+Math.random()*2:.6+Math.random()*1.2,
+     vz:(Math.random()-.5)*2});
+ }
+}
+function animateEffects(dt){
+ for(let i=effects.length-1;i>=0;i--){
+   const e=effects[i];e.life-=dt;
+   if(e.life<=0){scene.remove(e.mesh);effects.splice(i,1);continue}
+   e.vy-=dt*4;e.mesh.position.x+=e.vx*dt;
+   e.mesh.position.y=Math.max(.04,e.mesh.position.y+e.vy*dt);
+   e.mesh.position.z+=e.vz*dt;
+   e.mesh.scale.setScalar(Math.max(.05,e.life/e.max));
+ }
+}
+function clearEffects(){for(const e of effects)scene.remove(e.mesh);effects.length=0}
+let mudPuffCooldown=0;
+const crashQuips={
+ tree:['You branched off course!','That tree was not moving.','A spectacular defeat by shrubbery!'],
+ vehicle:['Outpaced by farm equipment!','The maintenance crew wins again!','That was not a shortcut!'],
+ horse:['Too much horsing around!','The other jockey sends their regards!'],
+ other:['The Derby has claimed another champion!','A legendary tumble for the newspapers!']
+};
+function crashPresentation(reason){
+ const lower=reason.toLowerCase();
+ const category=lower.includes('tree')?'tree':/tractor|truck|wagon|vehicle|gate/.test(lower)?'vehicle':/horse|rival/.test(lower)?'horse':'other';
+ const lines=crashQuips[category];
+ $('crashQuip').textContent=lines[Math.floor(Math.random()*lines.length)];
+ $('crashShow').classList.remove('visible');
+ void $('crashShow').offsetWidth;
+ $('crashShow').classList.add('visible');
+}
+
+// ---------------------------------------------------------------------------
+// COURSE ADDITIONS. Original terrain, traffic arrays, collision checks, camera,
+// save keys, and input timings remain owned by the original game.
+// All new hazards are separate row attachments. Extra random choices use a
+// separate, deterministic stream and never call Math.random directly.
+// ---------------------------------------------------------------------------
+const COURSE = Object.freeze({
+  hayFrom:50, hurdlesFrom:100, trailsFrom:108, trailInterval:45,
+  trailLength:5, trailReward:5, left:-4, right:4, baleWrap:23
+});
+const courseMaterials={
+  straw:M(0xc99438),strawEnd:M(0xe7bc60),twine:M(0x875c32),
+  hurdle:M(0xb47d48),hurdleLight:M(0xf3e2ae),
+  arrow:new THREE.MeshBasicMaterial({color:0x94dbb4,side:THREE.DoubleSide}),
+  marker:new THREE.MeshBasicMaterial({color:0x9cdec1,side:THREE.DoubleSide}),
+  pennant:M(0xf3bc58)
+};
+let courseHop=null,trailFocus=null,trailHideAt=0;
+const carrotTrails=new Map();
+const courseRand=(row,salt)=>visualRandom(row,2400+salt);
+
+function resetCourseAdditions(){
+  courseHop=null;carrotTrails.clear();trailFocus=null;trailHideAt=0;
+  $('trailStatus').hidden=true;
+}
+function treeAt(row,tile){
+  return !!row&&row.obstacles.some(o=>!o.slow&&o.tileX===tile);
+}
+function hurdleAt(row,tile){
+  return row&&row.hurdles?row.hurdles.find(h=>h.tile===tile):null;
+}
+function courseOpenTile(row,tile){
+  return !!row&&tile>=COURSE.left&&tile<=COURSE.right&&
+    !treeAt(row,tile)&&!hurdleAt(row,tile);
+}
+function markForwardArrow(parent,x,z){
+  // Three small chevrons, not a colored ground tile. Forward is world -Z.
+  const vertices=[];
+  for(let n=0;n<2;n++){
+    const zz=z+n*.27;
+    vertices.push(x-.28,.043,zz+.20, x+.28,.043,zz+.20, x,.043,zz-.10);
+  }
+  const geo=new THREE.BufferGeometry();
+  geo.setAttribute('position',new THREE.Float32BufferAttribute(vertices,3));
+  const mesh=new THREE.Mesh(geo,courseMaterials.arrow);
+  parent.add(mesh);
+}
+function makeHurdle(row,tile){
+  const x=tile*STEP,z=.62;
+  const root=group(row.g,x,0,z);
+  // Low, single-tile racing hurdle: land in the tile beyond the crossbar.
+  for(const side of [-1,1]){
+    box(root,courseMaterials.hurdle,side*.92,.52,0,.13,1.04,.16);
+    box(root,courseMaterials.hurdle,side*.92,.10,0,.30,.18,.64);
+    box(root,courseMaterials.hurdleLight,side*.92,1.06,0,.21,.12,.23);
+  }
+  box(root,courseMaterials.hurdle,0,.78,0,1.96,.16,.16);
+  box(root,courseMaterials.hurdleLight,0,.94,0,1.96,.13,.19);
+  for(const xx of [-.65,0,.65])
+    box(root,mats.red,xx,.946,-.105,.19,.11,.025);
+  markForwardArrow(row.g,x,.88);
+  return {tile,x,root};
+}
+function addHayWarning(row){
+  for(const side of [-1,1]){
+    const post=group(row.g,side*12.9,0,0);
+    box(post,mats.wood,0,.72,0,.12,1.44,.12);
+    box(post,courseMaterials.pennant,0,1.43,0,.85,.48,.10);
+    // A round straw emblem makes the sign recognizable from either direction.
+    orb(post,courseMaterials.strawEnd,0,1.43,-.065,.17,.17,.06);
+  }
+}
+function makeRollingBale(row,index){
+  const root=group(row.g);
+  const radius=.86,depth=1.15;
+  const roller=group(root,0,radius,0);
+  const cylinder=new THREE.Mesh(
+    new THREE.CylinderGeometry(radius,radius,depth,14),courseMaterials.straw);
+  cylinder.rotation.x=Math.PI/2;roller.add(cylinder);
+  cylinder.castShadow=true;cylinder.receiveShadow=true;
+  for(const side of [-1,1]){
+    const end=new THREE.Mesh(new THREE.CircleGeometry(radius*.96,14),
+      courseMaterials.strawEnd);
+    end.position.z=side*(depth/2+.005);
+    if(side<0)end.rotation.y=Math.PI;
+    roller.add(end);
+    for(let j=0;j<6;j++){
+      const angle=j*Math.PI/3;
+      const mark=box(roller,courseMaterials.twine,
+        Math.cos(angle)*.40,Math.sin(angle)*.40,side*(depth/2+.018),
+        .40,.045,.02);
+      mark.rotation.z=angle;
+      mark.castShadow=false;
+    }
+    const band=new THREE.Mesh(new THREE.TorusGeometry(radius+.005,.042,4,14),
+      courseMaterials.twine);
+    band.position.z=side*.32;roller.add(band);
+  }
+  const direction=courseRand(row.i,21)>.5?1:-1;
+  const speed=(6.5+courseRand(row.i,22)*1.5)*
+    (1+Math.min(6,Math.floor((row.i-COURSE.hayFrom)/45))*.065);
+  const period=3.9+courseRand(row.i,23)*.65;
+  const spawnX=direction*(-19+courseRand(row.i,24)*5-index*22);
+  const bale={root,roller,radius,x:0,previousX:0,sweepX:0,direction,
+    speed,period,rollTime:period*.72,spawnX,spawnTime:elapsed,
+    offset:courseRand(row.i,25)*period};
+  bale.x=baleXAt(bale,elapsed);
+  bale.previousX=bale.x;bale.sweepX=bale.x;root.position.x=bale.x;
+  return bale;
+}
+function baleTravel(bale,time){
+  // Exact integral of a sine-squared rolling burst followed by a rest.
+  // Both AI look-ahead and frame updates use this same function.
+  const t=Math.max(0,time-bale.spawnTime+bale.offset);
+  const cycles=Math.floor(t/bale.period),phase=t-cycles*bale.period;
+  const moving=Math.min(phase,bale.rollTime);
+  const distance=cycles*bale.rollTime*.5+
+    moving*.5-bale.rollTime*Math.sin(2*Math.PI*moving/bale.rollTime)/(4*Math.PI);
+  return distance*bale.speed;
+}
+function baleXAt(bale,time){
+  const span=COURSE.baleWrap*2;
+  const raw=bale.spawnX+bale.direction*baleTravel(bale,time);
+  return ((raw+COURSE.baleWrap)%span+span)%span-COURSE.baleWrap;
+}
+function decorateCourseRow(row){
+  row.hurdles=[];row.hayBales=[];
+  // Only attach new hazards to selected existing grassy rows. Do not replace,
+  // move, accelerate, or remove the original horses, vehicles, trees or mud.
+  if(row.type!=='safe')return;
+  const haySection=row.i>=COURSE.hayFrom&&row.i%9===0;
+  const hayChance=.38+Math.min(.16,Math.max(0,row.i-100)/1000);
+  if(haySection&&courseRand(row.i,1)<hayChance){
+    const count=row.i>=190?2:1;
+    for(let i=0;i<count;i++)row.hayBales.push(makeRollingBale(row,i));
+    addHayWarning(row);
+  }
+  const preceding=rows.get(row.i-1);
+  const beginnerPair=row.i<175&&preceding&&preceding.hayBales&&preceding.hayBales.length;
+  if(row.i>=COURSE.hurdlesFrom&&row.i%9===1&&!beginnerPair&&
+     courseRand(row.i,2)<.76){
+    const free=[];
+    for(let tile=COURSE.left;tile<=COURSE.right;tile++){
+      if(treeAt(row,tile))continue;
+      if(row.pickups.some(p=>Math.abs(p.x-tile*STEP)<.1))continue;
+      free.push(tile);
+    }
+    free.sort((a,b)=>courseRand(row.i,70+a)-courseRand(row.i,70+b));
+    const count=row.i>=250?3:row.i>=175?2:1;
+    for(const tile of free){
+      if(row.hurdles.length>=count)break;
+      if(row.hurdles.some(h=>Math.abs(h.tile-tile)<2))continue;
+      row.hurdles.push(makeHurdle(row,tile));
+    }
+  }
+}
+function prepareCourseHop(dir,tile,rowIndex){
+  const target=hurdleAt(rows.get(rowIndex),tile);
+  const clears=!!target&&dir==='forward'&&rowIndex===player.row+1&&tile===player.x;
+  courseHop=target?{row:rowIndex,tile,clears,blocked:!clears}:null;
+}
+function checkCourseHop(progress){
+  if(courseHop&&courseHop.blocked&&progress>=.8){
+    collisionOrShield('You clipped a steeplechase hurdle! Follow the arrows and hop FORWARD to clear it.');
+    return false;
+  }
+  return true;
+}
+function liftHurdleVisual(h,progress){
+  // The visual body rises, not the root used by the existing collision rules.
+  // Clearing a hurdle grants no extra invulnerability against other obstacles.
+  h.body.position.y+=Math.sin(Math.min(1,Math.max(0,progress))*Math.PI)*.68;
+}
+function updateRollingBales(){
+  for(const row of rows.values())for(const bale of (row.hayBales||[])){
+    const next=baleXAt(bale,elapsed),old=bale.x;
+    bale.previousX=old;
+    // Wrapping happens outside the fence; never sweep a hitbox across the track.
+    bale.sweepX=Math.abs(next-old)>COURSE.baleWrap?next:old;
+    bale.x=next;bale.root.position.x=next;
+    bale.roller.rotation.z=-bale.direction*baleTravel(bale,elapsed)/bale.radius;
+  }
+}
+function segmentHitsBox(x0,z0,x1,z1,hx,hz){
+  // Slab intersection for swept XZ hitboxes; no fast-frame tunneling.
+  let enter=0,leave=1;
+  for(const [p,d,half] of [[x0,x1-x0,hx],[z0,z1-z0,hz]]){
+    if(Math.abs(d)<1e-9){if(Math.abs(p)>half)return false;continue}
+    let a=(-half-p)/d,b=(half-p)/d;
+    if(a>b){const swap=a;a=b;b=swap}
+    enter=Math.max(enter,a);leave=Math.min(leave,b);
+    if(enter>leave)return false;
+  }
+  return true;
+}
+function checkPlayerBales(oldX,oldZ){
+  for(const row of rows.values()){
+    const z=-row.i*STEP;
+    if(Math.min(oldZ,hero.root.position.z)>z+1.0||
+       Math.max(oldZ,hero.root.position.z)<z-1.0)continue;
+    for(const bale of (row.hayBales||[])){
+      if(segmentHitsBox(oldX-bale.sweepX,oldZ-z,
+        hero.root.position.x-bale.x,hero.root.position.z-z,bale.radius+.38,.92)){
+        collisionOrShield('A rolling hay bale bowled you over! Wait for its pause or cross through a gap.');
+        return false;
+      }
+    }
+  }
+  return true;
+}
+function courseDangerForRival(row,tile,secondsAhead,origin){
+  if(!row)return false;
+  const hurdle=hurdleAt(row,tile);
+  if(hurdle){
+    const standing=origin&&origin.row===row.i&&origin.tile===tile;
+    const forward=origin&&row.i===origin.row+1&&tile===origin.tile;
+    if(!standing&&!forward)return true;
+  }
+  return (row.hayBales||[]).some(b=>
+    Math.abs(baleXAt(b,elapsed+secondsAhead)-tile*STEP)<b.radius+.72);
+}
+function prepareRivalCourseHop(a,pick){
+  const same=pick.row===a.row&&pick.tile===a.tile;
+  const target=!same&&hurdleAt(rows.get(pick.row),pick.tile);
+  const clears=!!target&&pick.row===a.row+1&&pick.tile===a.tile;
+  a.courseBlocked=!!target&&!clears;
+  if(clears)a.courseLiftStart=elapsed;
+}
+function checkRivalCourseHazards(a){
+  if(a.courseBlocked){
+    finishShowdown(true,'The rival approached a hurdle from the wrong direction.');
+    return false;
+  }
+  const pos=a.horse.root.position;
+  for(const row of rows.values()){
+    if(Math.abs(-row.i*STEP-pos.z)>.92)continue;
+    for(const bale of (row.hayBales||[])){
+      if(segmentHitsBox(pos.x-bale.sweepX,0,pos.x-bale.x,0,bale.radius+.38,.92)){
+        finishShowdown(true,'The rival ran into a rolling hay bale.');
+        return false;
+      }
+    }
+  }
+  return true;
+}
+
+function trailCellFree(row,tile){
+  if(!courseOpenTile(row,tile)||(row.hayBales||[]).length)return false;
+  const x=tile*STEP;
+  if(row.pickups.some(p=>!p.got&&Math.abs(p.x-x)<1.1))return false;
+  if(row.obstacles.some(o=>o.slow&&Math.abs(o.x-x)<o.r+.35))return false;
+  // Never create a trail carrot inside a moving model. Traffic can subsequently
+  // cross the tile, so the trail is a routing challenge, NOT a promise of safety.
+  if(row.moving.some(h=>Math.abs(h.x-x)<1.7))return false;
+  if(row.vehicles.some(v=>Math.abs(v.x-x)<v.halfWidth+.75))return false;
+  return true;
+}
+function findTrailRoute(first){
+  const route=[];
+  function walk(index,previous){
+    if(index===COURSE.trailLength)return true;
+    const row=rows.get(first+index);
+    if(!row)return false;
+    const candidates=[];
+    for(let tile=COURSE.left;tile<=COURSE.right;tile++){
+      if(!trailCellFree(row,tile))continue;
+      if(previous!==null){
+        if(Math.abs(tile-previous)>1)continue;
+        // Change columns only where a safe, unobstructed lateral hop precedes
+        // the next forward hop. Never require diagonals or jumping over a tree.
+        if(tile!==previous){
+          const prior=rows.get(first+index-1);
+          if(!prior||prior.type!=='safe'||(prior.hayBales||[]).length||
+             !courseOpenTile(prior,tile))continue;
+        }
+      }
+      candidates.push(tile);
+    }
+    candidates.sort((a,b)=>{
+      const rank=tile=>courseRand(first,index*31+tile+410)+
+        (previous!==null&&tile!==previous?.20:0);
+      return rank(a)-rank(b);
+    });
+    for(const tile of candidates){
+      route.push(tile);
+      if(walk(index+1,tile))return true;
+      route.pop();
+    }
+    return false;
+  }
+  return walk(0,null)?route:null;
+}
+function trailNumberSprite(number){
+  const canvas=document.createElement('canvas');canvas.width=64;canvas.height=48;
+  const ctx=canvas.getContext('2d');
+  ctx.fillStyle='rgba(21,63,46,.92)';ctx.fillRect(5,4,54,40);
+  ctx.strokeStyle='#9cdec1';ctx.lineWidth=3;ctx.strokeRect(5,4,54,40);
+  ctx.fillStyle='#fff0c5';ctx.textAlign='center';ctx.textBaseline='middle';
+  ctx.font='bold 27px sans-serif';ctx.fillText(String(number),32,25);
+  const texture=new THREE.CanvasTexture(canvas);
+  const material=new THREE.SpriteMaterial({map:texture,depthWrite:false});
+  const sprite=new THREE.Sprite(material);sprite.scale.set(.65,.49,1);
+  sprite.position.y=1.12;
+  return {sprite,texture,material};
+}
+function createTrailPickup(row,tile,trail,index){
+  const x=tile*STEP,golden=courseRand(row.i,970+index)<1/40;
+  const obj=group(row.g,x,.58,0);
+  box(obj,golden?goldenCarrot:carrotOrange,0,0,0,.5,.75,.48);
+  box(obj,mats.leaf,0,.47,0,.35,.2,.28);
+  if(golden){
+    box(obj,goldenCarrot,0,.04,.26,.17,.43,.08);
+    box(obj,goldenCarrot,0,.04,-.26,.17,.43,.08);
+  }
+  // Number tags distinguish an optional trail from ordinary carrots.
+  const label=trailNumberSprite(index+1);obj.add(label.sprite);
+  if(!row.courseDisposables)row.courseDisposables=[];
+  row.courseDisposables.push(label.texture,label.material);
+  row.pickups.push({x,obj,got:false,golden,trailId:trail.id,trailIndex:index});
+}
+function ensureCarrotTrails(){
+  const low=Math.max(COURSE.trailsFrom,high-KEEP_BEHIND);
+  const firstIndex=Math.max(0,Math.ceil((low-COURSE.trailsFrom)/COURSE.trailInterval));
+  const end=high+KEEP_AHEAD-COURSE.trailLength;
+  for(let first=COURSE.trailsFrom+firstIndex*COURSE.trailInterval;
+      first<=end;first+=COURSE.trailInterval){
+    if(carrotTrails.has(first)||first<high+8)continue;
+    const route=findTrailRoute(first);
+    const trail={id:first,first,end:first+COURSE.trailLength-1,
+      collected:new Set(),rewarded:false,skipped:!route};
+    carrotTrails.set(first,trail);
+    if(route)route.forEach((tile,index)=>
+      createTrailPickup(rows.get(first+index),tile,trail,index));
+  }
+  for(const [id,trail] of carrotTrails){
+    if(trail.end<high-KEEP_BEHIND){
+      if(trailFocus===id){trailFocus=null;$('trailStatus').hidden=true}
+      carrotTrails.delete(id);
+    }
+  }
+}
+function collectTrailCarrot(p){
+  if(p.trailId===undefined)return;
+  const trail=carrotTrails.get(p.trailId);
+  if(!trail||trail.rewarded||trail.collected.has(p.trailIndex))return;
+  trail.collected.add(p.trailIndex);
+  trailFocus=trail.id;trailHideAt=0;
+  const hud=$('trailStatus');hud.hidden=false;
+  if(trail.collected.size===COURSE.trailLength){
+    trail.rewarded=true;
+    // Only the reward enters the bank. Original pickup counts still drive the
+    // original achievements and daily goals; a bonus is not a phantom pickup.
+    bankCarrot(COURSE.trailReward);
+    hud.textContent='TRAIL COMPLETE · +'+COURSE.trailReward+' TO YOUR BANK';
+    trailHideAt=elapsed+3;
+    flash('🥕 TRAIL COMPLETE! +'+COURSE.trailReward+' BANK BONUS');
+  }else{
+    hud.textContent='🥕 CARROT TRAIL '+trail.collected.size+'/'+COURSE.trailLength+
+      ' · Finish for +'+COURSE.trailReward;
+  }
+}
+function updateTrailNotice(){
+  if(trailHideAt&&elapsed>=trailHideAt){
+    $('trailStatus').hidden=true;trailHideAt=0;trailFocus=null;
+  }
+}
+
 function makeRow(i){if(rows.has(i))return;const z=-i*STEP;let g=group(scene,0,0,z);const race=i>3&&(i%9!==0)&&(i%9!==1);const type=i<4?'safe':race?(Math.random()<.18?'mud':'race'):'safe';const season=climates[seasonForRow(i)];const col=type==='safe'?season.grass[i%2]:type==='mud'?0x805237:season.track[i%2];
 box(g,M(col),0,-.18,0,34,.36,STEP+.04);countryside(g,i);
 if(type!=='safe'){for(let x=-10;x<=10;x+=5){box(g,mats.white,x,.026,0,.065,.025,STEP*.7)}}
 for(let side of [-1,1]){rail(g,side*12.2,0);if(i%3===0)box(g,M(i%2?0xe2c153:0xd35b4c),side*14.7,.25,0,3,.5,STEP);if(i%6===0){box(g,mats.wood,side*16,.6,0,1.7,1.2,STEP*1.5);for(let j=0;j<3;j++)orb(g,M(silks[(i+j)%silks.length]),side*(15.3+j*.65),1.4,0,.27)}}
 let obstacles=[],moving=[],pickups=[],vehicles=[];
-if(type==='safe'){for(let j=0;j<2;j++){let x=(Math.floor(Math.random()*11)-5)*2;if(Math.abs(x)<3&&i<9)continue;tree(g,x,0,M(season.leaf));obstacles.push({x,r:.8})}if(i>4&&Math.random()<.5){let x=(Math.floor(Math.random()*9)-4)*2;const c=group(g,x,.58,0);box(c,mats.gold,0,0,0,.5,.75,.48);box(c,mats.leaf,0,.47,0,.35,.2,.28);pickups.push({x,obj:c,got:false})}}
+if(type==='safe'){for(let j=0;j<2;j++){let tileX=Math.floor(Math.random()*11)-5;let x=tileX*STEP;if(Math.abs(x)<3&&i<9)continue;if(obstacles.some(o=>o.tileX===tileX))continue;tree(g,x,0,M(season.leaf));obstacles.push({x,r:.8,tileX})}if(i>4&&Math.random()<.82){const free=[-4,-3,-2,-1,0,1,2,3,4].filter(tile=>!obstacles.some(o=>o.tileX===tile));const tile=free.length?free[Math.floor(Math.random()*free.length)]:null;if(tile!==null){let x=tile*STEP;const golden=Math.random()<1/40;const c=group(g,x,.58,0);box(c,golden?goldenCarrot:carrotOrange,0,0,0,.5,.75,.48);box(c,mats.leaf,0,.47,0,.35,.2,.28);if(golden){box(c,goldenCarrot,0,.04,.26,.17,.43,.08);box(c,goldenCarrot,0,.04,-.26,.17,.43,.08)}pickups.push({x,obj:c,got:false,golden})}}}
 else{// Difficulty scales with distance, then caps to keep late runs fair.
 const difficulty=Math.min(11,Math.floor(i/25));
 const frenzy=i>=50?Math.min(6,Math.floor((i-50)/35)+1):0;
@@ -456,7 +995,7 @@ const h=horse(g,featured?featured.coat:regularCoat,featured?featured.silk:silks[
 h.root.rotation.y=speed>0?-Math.PI/2:Math.PI/2;
 moving.push({x,speed,horse:h,hit:false,tag:i*10+j,featured})}
 if(type==='mud'){for(let j=0;j<4;j++){const x=(Math.random()-.5)*21;const patch=box(g,mats.mud,x,.025,(Math.random()-.5)*.7,2.2,.045,.9);patch.castShadow=false;obstacles.push({x,r:.9,slow:true})}}
-if(Math.random()<.33){let x=(Math.floor(Math.random()*9)-4)*2.3;const c=group(g,x,.55,0);box(c,mats.gold,0,0,0,.5,.7,.48);box(c,mats.leaf,0,.45,0,.3,.2,.3);pickups.push({x,obj:c,got:false})}}
+}
 if(i>=75&&i%27===8){for(const side of [-1,1]){
  const post=group(g,side*13.6,0,0);
  box(post,mats.wood,0,1.6,0,.22,3.2,.22);
@@ -464,35 +1003,134 @@ if(i>=75&&i%27===8){for(const side of [-1,1]){
  }}
 if(i%15===0&&i>0){for(let x=-10;x<=10;x+=4){box(g,mats.white,x,.035,0,1.3,.035,.2)}const sign=group(g,0,0,0);box(sign,mats.gold,0,3,0,6,.8,.3);box(sign,mats.white,-3,1.5,0,.18,3,.18);box(sign,mats.white,3,1.5,0,.18,3,.18)}
 if(i>0&&i%25===0)milestoneDecor(g,i);
-rows.set(i,{g,i,type,obstacles,moving,pickups,vehicles,wildlife:wildlifeDecor(g,i)})}
-function disposeRow(row){scene.remove(row.g);row.g.traverse(o=>{if(o.isMesh&&o.geometry!==cube&&o.geometry!==sphereGeo)o.geometry.dispose()})}
-function ensureRows(){const start=Math.max(0,high-KEEP_BEHIND),end=high+KEEP_AHEAD;for(let i=start;i<=end;i++)makeRow(i);for(let [i,row] of rows)if(i<start||i>end+3){disposeRow(row);rows.delete(i)}}
+rows.set(i,{g,i,type,obstacles,moving,pickups,vehicles,wildlife:wildlifeDecor(g,i),scenes:scenicLife(g,i),surprise:scenicSurprise(g,i)});decorateCourseRow(rows.get(i));}
+function disposeRow(row){for(const item of (row.courseDisposables||[]))item.dispose();scene.remove(row.g);row.g.traverse(o=>{if(o.isMesh&&o.geometry!==cube&&o.geometry!==sphereGeo)o.geometry.dispose()})}
+function ensureRows(){const start=Math.max(0,high-KEEP_BEHIND),end=high+KEEP_AHEAD;for(let i=start;i<=end;i++)makeRow(i);for(let [i,row] of rows)if(i<start||i>end+3){disposeRow(row);rows.delete(i)}ensureCarrotTrails();}
 function flash(t){$('msg').textContent=t;$('msg').classList.add('on');clearTimeout(msgTimeout);msgTimeout=setTimeout(()=>$('msg').classList.remove('on'),850)}
 // Cosmetic-only stable collection: unlocks depend on the existing best-distance record.
 const coatOptions=[
 {name:'Chestnut',coat:0xa25d35,shirt:0x2678d4,need:0},
-{name:'Palomino',coat:0xd4a055,shirt:0x9a55c5,need:25},
-{name:'Dapple Grey',coat:0xaaaaa4,shirt:0xc33e43,need:50},
-{name:'Midnight',coat:0x38353b,shirt:0xf2d045,need:100},
-{name:'Snowflake',coat:0xe8dfc8,shirt:0x31bba2,need:150},
-{name:'Golden Derby',coat:0xe4b94d,shirt:0x573db0,need:250}
+{name:'Palomino',coat:0xd4a055,shirt:0x9a55c5,need:12},
+{name:'Dapple Grey',coat:0xaaaaa4,shirt:0xc33e43,need:25},
+{name:'Midnight',coat:0x38353b,shirt:0xf2d045,need:40},
+{name:'Snowflake',coat:0xe8dfc8,shirt:0x31bba2,need:60},
+{name:'Golden Derby',coat:0xe4b94d,shirt:0x573db0,need:95}
 ];
 let chosenCoat=0;
 try{chosenCoat=Math.max(0,Math.min(coatOptions.length-1,Number(localStorage.getItem('gallophop-coat'))||0))}catch(e){}
+
+// Persistent, cosmetic-only carrot economy.
+const STORE_KEY='gallophop-carrot-store-v1';
+const outfits=[
+ {name:'Classic Blue',color:0x2678d4,cost:0},
+ {name:'Ruby Silks',color:0xd74448,cost:15},
+ {name:'Emerald Silks',color:0x26a67d,cost:25},
+ {name:'Royal Purple',color:0x9159c5,cost:40},
+ {name:'Golden Champion',color:0xf3c34c,cost:65}
+];
+const saddles=[
+ {name:'Classic Saddle',color:0x292b2d,cost:0,style:0},
+ {name:'Red Saddlecloth',color:0xc43c44,cost:12,style:1},
+ {name:'Emerald Blanket',color:0x30a486,cost:22,style:1},
+ {name:'Royal Gold Tack',color:0xe6c15c,cost:45,style:2},
+ {name:'Midnight Stars',color:0x6356a7,cost:60,style:2}
+];
+let carrotStore={bank:0,coats:[0],outfits:[0],saddles:[0],outfit:0,saddle:0};
+try{
+ const loaded=JSON.parse(localStorage.getItem(STORE_KEY)||'null');
+ if(loaded&&typeof loaded==='object'){
+  carrotStore={...carrotStore,...loaded};
+  for(const key of ['coats','outfits','saddles']){
+   if(!Array.isArray(carrotStore[key]))carrotStore[key]=[0];
+   if(!carrotStore[key].includes(0))carrotStore[key].unshift(0);
+  }
+  carrotStore.bank=Math.max(0,Math.floor(Number(carrotStore.bank)||0));
+ }
+}catch(e){}
+function saveCarrotStore(){try{localStorage.setItem(STORE_KEY,JSON.stringify(carrotStore))}catch(e){}}
+// Honor horse coats already earned under the old distance-unlock system.
+try{
+ if(!localStorage.getItem(STORE_KEY)){
+  const previousMilestones=[0,25,50,100,150,250];
+  carrotStore.coats=previousMilestones.map((distance,i)=>best>=distance?i:-1).filter(i=>i>=0);
+  saveCarrotStore();
+ }
+}catch(e){}
+
+function bankCarrot(amount=1){
+ carrotStore.bank+=amount;saveCarrotStore();
+ $('bankBalance').textContent=carrotStore.bank;
+}
+function decorateHorse(h){
+ const outfit=outfits[carrotStore.outfit]||outfits[0];
+ const saddle=saddles[carrotStore.saddle]||saddles[0];
+ // Horse builder already has shirt and saddle; this recolors the outfit
+ // and overlays a decorative saddle blanket without modifying hitboxes.
+ if(h&&h.body){
+  const shirtColor=new THREE.Color(outfit.color);
+  h.body.traverse(o=>{
+   if(o.isMesh&&o.material&&o.material.color){
+    if(o.material.color.getHex()===coatOptions[chosenCoat].shirt){
+     o.material=o.material.clone();o.material.color.copy(shirtColor);
+    }
+   }
+  });
+  if(saddle.style){
+   const cloth=box(h.body,M(saddle.color),0,1.7,.15,1.11,.09,1.02);
+   cloth.castShadow=false;
+   if(saddle.style===2){
+    for(const x of [-.52,.52])box(h.body,mats.gold,x,1.77,.15,.08,.13,.9);
+   }
+  }
+ }
+}
+function openStableShop(){
+ if(run)return;
+ const overlay=$('shopOverlay');overlay.style.display='flex';
+ renderShop();
+}
+function closeStableShop(){$('shopOverlay').style.display='none'}
+function shopButton(section,i,item){
+ const owned=carrotStore[section].includes(i);
+ const selected=section==='coats'?chosenCoat===i:carrotStore[section.slice(0,-1)]===i;
+ const b=document.createElement('button');
+ b.type='button';b.className='shopItem';
+ b.textContent=(selected?'✓ ':owned?'● ':'🔒 ')+item.name+(owned?'':' · 🥕 '+item.cost);
+ b.onclick=()=>{
+  if(!owned){
+   if(carrotStore.bank<item.cost){flash('🥕 NOT ENOUGH CARROTS');return}
+   carrotStore.bank-=item.cost;carrotStore[section].push(i);
+  }
+  if(section==='coats'){chosenCoat=i;try{localStorage.setItem('gallophop-coat',String(i))}catch(e){}}
+  else carrotStore[section.slice(0,-1)]=i;
+  saveCarrotStore();renderStable();renderShop();
+ };
+ return b;
+}
+function renderShop(){
+ $('shopBalance').textContent=carrotStore.bank;
+ const lists=[['coats',coatOptions],['outfits',outfits],['saddles',saddles]];
+ for(const [name,items] of lists){
+  const root=$('shop-'+name);root.replaceChildren();
+  items.forEach((item,i)=>root.append(shopButton(name,i,{...item,cost:item.cost??item.need})));
+ }
+}
+$('shopOpen').onclick=openStableShop;
+$('shopClose').onclick=closeStableShop;
+
 function renderStable(){
  const wrap=$('coatChoices');wrap.replaceChildren();
- if(best<coatOptions[chosenCoat].need)chosenCoat=0;
+ if(!carrotStore.coats.includes(chosenCoat))chosenCoat=0;
  for(let i=0;i<coatOptions.length;i++){
-   const opt=coatOptions[i],unlocked=best>=opt.need;
-   const b=document.createElement('button');
-   b.textContent=unlocked?opt.name:'🔒 '+opt.need;
-   b.title=unlocked?opt.name:'Reach distance '+opt.need+' to unlock '+opt.name;
-   b.disabled=!unlocked;
+   if(!carrotStore.coats.includes(i))continue;
+   const opt=coatOptions[i],b=document.createElement('button');
+   b.textContent=opt.name;
    if(i===chosenCoat)b.classList.add('chosen');
    b.onclick=()=>{chosenCoat=i;try{localStorage.setItem('gallophop-coat',String(i))}catch(e){}renderStable()};
    wrap.appendChild(b);
  }
- $('coatHint').textContent='Selected: '+coatOptions[chosenCoat].name+' · All coats have identical gameplay stats.';
+ $('bankBalance').textContent=carrotStore.bank;
+ $('coatHint').textContent='Selected: '+coatOptions[chosenCoat].name+' · Cosmetics only; no racing advantages.';
 }
 renderStable();
 // Persistent achievements are cosmetic-only; no racing physics are modified.
@@ -595,14 +1233,92 @@ let dailyRunOvertakes=0,dailyRunCarrots=0;
 $('dailyOpen').onclick=()=>{renderDaily();$('dailyModal').classList.add('visible')};
 $('dailyClose').onclick=()=>$('dailyModal').classList.remove('visible');
 $('dailyModal').addEventListener('click',e=>{if(e.target===$('dailyModal'))$('dailyModal').classList.remove('visible')});
-function start(){announcedIntensityBand=-1;rerollVisualWorld();chooseProgram();resetDailyIfNeeded();dailyRunOvertakes=0;dailyRunCarrots=0;for(const p of derbyConfetti)scene.remove(p.mesh);derbyConfetti=[];moveQueue.length=0;for(let row of rows.values())disposeRow(row);rows.clear();if(hero)scene.remove(hero.root);hero=horse(scene,coatOptions[chosenCoat].coat,coatOptions[chosenCoat].shirt);player={x:0,row:0};hero.root.position.set(0,0,0);hero.root.rotation.y=0;heroTargetAngle=0;celebrateUntil=0;celebratedRow=0;high=0;cameraProgress=0;elapsed=0;hopT=0;lastMove=0;coins=0;overtakes=0;stamina=100;aiPassed.clear();run=true;dead=false;ensureRows();$('menu').style.display='none';showRaceBanner('🏁 '+raceProgram.name+' · Watch for '+raceProgram.featured.name+'!',4);updateHUD();setCamera(true)}
+
+// Optional head-to-head showdown. The rival uses the same generated world,
+// grid coordinates, and lethal obstacle checks; it never changes row generation.
+let showdown=false,rival=null;
+$('modeToggle').onclick=()=>{
+ showdown=!showdown;
+ $('modeToggle').textContent=showdown?'🏁 MODE: RIVAL SHOWDOWN':'🏇 MODE: ENDLESS';
+ $('modeHelp').textContent=showdown?'First horse to crash loses':'Classic endless derby';
+};
+function collisionOrShield(reason){finish(reason);return false;}
+function rivalDanger(row,tile,secondsAhead=0,origin=null){
+ if(!row)return false;
+ const x=tile*STEP;
+ if(row.obstacles.some(o=>!o.slow&&o.tileX===tile))return true;
+ if(row.moving.some(h=>Math.abs(h.x+h.speed*secondsAhead-x)<1.85))return true;
+ if(row.vehicles.some(v=>Math.abs(v.x+v.speed*secondsAhead-x)<v.halfWidth+.8))return true;
+ if(courseDangerForRival(row,tile,secondsAhead,origin))return true;
+ return false;
+}
+function startRival(){
+ if(rival&&rival.horse)scene.remove(rival.horse.root);
+ rival=null;
+ if(!showdown){$('rivalHud').style.display='none';return}
+ const h=horse(scene,0xe2c49a,0xe25d5b);
+ rival={horse:h,tile:2,row:0,stepClock:.5,dead:false,steps:0};
+ h.root.position.set(2*STEP,0,0);
+ $('rivalHud').style.display='block';
+}
+function finishShowdown(playerWins,reason){
+ if(!run)return;
+ if(playerWins){
+  flash('🏆 RIVAL CRASHED — YOU WIN!');
+  finish('🏆 YOU WIN THE SHOWDOWN! Your rival crashed first. '+reason);
+ }else finish(reason);
+}
+function updateRival(dt){
+ if(!showdown||!rival||!run)return;
+ const a=rival;
+ a.stepClock-=dt;
+ if(!checkRivalCourseHazards(a))return;
+ // Collision checks use the rival's own world position, not the player position.
+ const row=rows.get(a.row),x=a.tile*STEP;
+ if(row&&(
+ row.obstacles.some(o=>!o.slow&&o.tileX===a.tile)||
+ row.moving.some(h=>Math.abs(h.x-x)<1.25)||
+ row.vehicles.some(v=>Math.abs(v.x-x)<v.halfWidth+.5)
+ )){finishShowdown(true,'');return}
+ if(a.stepClock<=0){
+   // Rival races forward when possible; otherwise chooses a safe adjacent tile.
+   // A small mistake probability makes the showdown winnable and varied.
+   const options=[{tile:a.tile,row:a.row+1,weight:5},
+     {tile:a.tile-1,row:a.row,weight:2},
+     {tile:a.tile+1,row:a.row,weight:2},
+     {tile:a.tile,row:a.row,weight:.35}];
+   const candidates=options.filter(o=>o.tile>=-4&&o.tile<=4&&o.row<=high+KEEP_AHEAD-3&&
+     !rivalDanger(rows.get(o.row),o.tile,.19,a));
+   if(!candidates.length){finishShowdown(true,'The rival was trapped!');return}
+   let pick;
+   if(Math.random()<.035+Math.min(.09,a.row*.0003)){
+     pick=options[Math.floor(Math.random()*options.length)];
+     if(pick.tile< -4||pick.tile>4||pick.row>high+KEEP_AHEAD-3)pick=candidates[0];
+   }else{
+     let total=candidates.reduce((sum,o)=>sum+o.weight,0),v=Math.random()*total;
+     pick=candidates.find(o=>(v-=o.weight)<=0)||candidates[0];
+   }
+   prepareRivalCourseHop(a,pick);a.tile=pick.tile;a.row=pick.row;
+   a.horse.root.rotation.y=pick.row>Math.round(-a.horse.root.position.z/STEP)?0:pick.tile*STEP>x?-Math.PI/2:Math.PI/2;
+   a.stepClock=.23+Math.random()*.18;
+ }
+ const destX=a.tile*STEP,destZ=-a.row*STEP;
+ a.horse.root.position.x+=(destX-a.horse.root.position.x)*Math.min(1,dt*13);
+ a.horse.root.position.z+=(destZ-a.horse.root.position.z)*Math.min(1,dt*13);
+ animateHorse(a.horse,elapsed,.85);
+ if(a.courseLiftStart!==undefined&&elapsed-a.courseLiftStart<.16)liftHurdleVisual(a.horse,(elapsed-a.courseLiftStart)/.16);
+ $('rivalHud').textContent='🤖 RIVAL: '+a.row+'  ·  YOU: '+high;
+ // Rival is not allowed to pull the camera or alter the existing terrain stream.
+ if(a.row>high+KEEP_AHEAD-3)a.stepClock=Math.max(a.stepClock,.25);
+}
+function start(){resetCourseAdditions();$('crashShow').classList.remove('visible');clearEffects();mudPuffCooldown=0;announcedIntensityBand=-1;rerollVisualWorld();chooseProgram();resetDailyIfNeeded();dailyRunOvertakes=0;dailyRunCarrots=0;for(const p of derbyConfetti)scene.remove(p.mesh);derbyConfetti=[];moveQueue.length=0;for(let row of rows.values())disposeRow(row);rows.clear();if(hero)scene.remove(hero.root);hero=horse(scene,coatOptions[chosenCoat].coat,coatOptions[chosenCoat].shirt);decorateHorse(hero);player={x:0,row:0};hero.root.position.set(0,0,0);hero.root.rotation.y=0;heroTargetAngle=0;celebrateUntil=0;celebratedRow=0;high=0;cameraProgress=0;elapsed=0;hopT=0;lastMove=0;coins=0;overtakes=0;stamina=100;aiPassed.clear();run=true;dead=false;ensureRows();startRival();$('menu').style.display='none';showRaceBanner('🏁 '+raceProgram.name+' · Watch for '+raceProgram.featured.name+'!',4);updateHUD();setCamera(true)}
 function updateHUD(){if(run){checkTrophies();updateDaily()}$('distance').textContent=high;$('overtakes').textContent=overtakes;$('coins').textContent=coins;$('best').textContent=Math.max(best,high);$('status').textContent=stamina<20?'LOW STAMINA — COLLECT CARROTS!':'🏇 THE GRAND DERBY CROSSING'}
-function finish(reason){if(!run)return;run=false;dead=true;trophyData.runs++;checkTrophies();persistTrophies();if(high>best){best=high;try{localStorage.setItem('gallophop-best-v2',best)}catch(e){}}$('title').innerHTML='RACE<br>OVER';$('description').innerHTML=reason+'<br><br>Distance: <b>'+high+'</b> · Overtakes: <b>'+overtakes+'</b> · Carrots: <b>'+coins+'</b><br>Best distance: <b>'+best+'</b>';$('start').textContent='RACE AGAIN →';$('menu').style.display='flex';chooseProgram();renderStable();updateHUD()}
+function finish(reason){if(!run)return;$('trailStatus').hidden=true;if(showdown&&!reason.includes('YOU WIN'))reason='🤖 RIVAL WINS! '+reason;crashPresentation(reason);run=false;dead=true;$('rivalHud').style.display='none';trophyData.runs++;checkTrophies();persistTrophies();if(high>best){best=high;try{localStorage.setItem('gallophop-best-v2',best)}catch(e){}}$('title').innerHTML='RACE<br>OVER';$('description').innerHTML=reason+'<br><br>Distance: <b>'+high+'</b> · Overtakes: <b>'+overtakes+'</b> · Carrots: <b>'+coins+'</b><br>Best distance: <b>'+best+'</b>';$('start').textContent='RACE AGAIN →';$('menu').style.display='flex';chooseProgram();renderStable();updateHUD()}
 function move(dir){if(!run)return;
 if(hopT>0){if(moveQueue.length<MAX_QUEUED_MOVES)moveQueue.push(dir);return}
 let nx=player.x,nr=player.row;if(dir==='forward')nr++;else if(dir==='back')nr=Math.max(0,nr-1);else if(dir==='left')nx--;else if(dir==='right')nx++;// The playable track is INSIDE the rails at x = +/-12.2 world units.
 nx=Math.max(-4,Math.min(4,nx));if(nx===player.x&&nr===player.row){if(dir==='left'||dir==='right')flash('🚧 TRACK RAIL — STAY INSIDE!');return;}
-heroTargetAngle=dir==='forward'?0:dir==='back'?Math.PI:dir==='left'?Math.PI/2:-Math.PI/2;hopStart={x:player.x,z:-player.row*STEP};hopEnd={x:nx,z:-nr*STEP};player.x=nx;player.row=nr;hopT=.001;lastMove=elapsed;if(nr>high){high=nr;ensureRows();
+prepareCourseHop(dir,nx,nr);heroTargetAngle=dir==='forward'?0:dir==='back'?Math.PI:dir==='left'?Math.PI/2:-Math.PI/2;hopStart={x:player.x,z:-player.row*STEP};hopEnd={x:nx,z:-nr*STEP};player.x=nx;player.row=nr;hopT=.001;lastMove=elapsed;puff('dust',hero.root.position.x,.14,hero.root.position.z,4);if(nr>high){high=nr;ensureRows();
 const band=high>=50?Math.floor((high-50)/35):-1;
 if(band>=0&&band!==announcedIntensityBand){announcedIntensityBand=band;showRaceBanner(intensityLabel(high),3.1)}
 if(high>0&&high%25===0&&high!==celebratedRow){celebratedRow=high;celebrateUntil=elapsed+1.2;launchConfetti();flash('🏆 '+high+' ROW DERBY MILESTONE!')}}stamina=Math.max(0,stamina-.7);updateHUD()}
@@ -624,9 +1340,10 @@ function intensityLabel(row){
  const tier=Math.floor((row-50)/35);
  return ['🏇 THE PACK IS PICKING UP!','🔥 STAMPEDE STAKES!','🚜 MAINTENANCE MAYHEM!','⚡ LIGHTNING DERBY!','🌪️ FULL GALLOP FRENZY!','👑 LEGENDARY CHAOS!'][Math.min(5,tier)];
 }
-function tick(dt){elapsed+=dt;stamina=Math.min(100,stamina+dt*3.8);
-if(hopT>0){hopT+=dt/.16;const t=Math.min(hopT,1);hero.root.position.x=THREE.MathUtils.lerp(hopStart.x*STEP,hopEnd.x*STEP,t);hero.root.position.z=THREE.MathUtils.lerp(hopStart.z,hopEnd.z,t);hero.root.position.y=Math.sin(t*Math.PI)*.68;if(t>=1){hopT=0;hero.root.position.y=0;if(moveQueue.length)move(moveQueue.shift())}}
+function tick(dt){const oldCourseX=hero.root.position.x,oldCourseZ=hero.root.position.z;elapsed+=dt;updateRollingBales();updateTrailNotice();stamina=Math.min(100,stamina+dt*3.8);
+if(hopT>0){hopT+=dt/.16;const t=Math.min(hopT,1);hero.root.position.x=THREE.MathUtils.lerp(hopStart.x*STEP,hopEnd.x*STEP,t);hero.root.position.z=THREE.MathUtils.lerp(hopStart.z,hopEnd.z,t);hero.root.position.y=Math.sin(t*Math.PI)*.68;if(!checkCourseHop(t))return;if(t>=1){hopT=0;hero.root.position.y=0;if(moveQueue.length)move(moveQueue.shift())}}
 animateHorse(hero,elapsed,hopT>0?1:.18);
+if(courseHop&&courseHop.clears&&hopT>0)liftHurdleVisual(hero,hopT);
 // Turn along the shortest arc; no changes to the movement or collision positions.
 const angleDelta=Math.atan2(Math.sin(heroTargetAngle-hero.root.rotation.y),Math.cos(heroTargetAngle-hero.root.rotation.y));
 hero.root.rotation.y+=angleDelta*Math.min(1,dt*14);
@@ -644,19 +1361,20 @@ if(v.speed<0&&v.x< -25-v.halfWidth)v.x=25+v.halfWidth;
 v.obj.position.x=v.x;
 if(Math.abs(-row.i*STEP-hero.root.position.z)<1.05&&
 Math.abs(v.x-hero.root.position.x)<v.halfWidth+.55&&hero.root.position.y<.65){
-finish(v.kind==='water'?'A track watering truck knocked you out of the derby!':v.kind==='hay'?'A hay wagon knocked you out of the derby!':v.kind==='vet'?'A veterinary vehicle knocked you out of the derby!':'A tractor towing the starting gate knocked you out of the derby!');
+collisionOrShield(v.kind==='water'?'A track watering truck knocked you out of the derby!':v.kind==='hay'?'A hay wagon knocked you out of the derby!':v.kind==='vet'?'A veterinary vehicle knocked you out of the derby!':'A tractor towing the starting gate knocked you out of the derby!');
 return;
 }
 }
 for(const h of row.moving){h.x+=h.speed*dt;if(h.x>20)h.x=-20;if(h.x< -20)h.x=20;h.horse.root.position.x=h.x;animateHorse(h.horse,elapsed,Math.abs(h.speed)/5);if(h.featured&&!announcedRivals.has('seen'+h.tag)&&Math.abs(row.i-player.row)<3){announcedRivals.add('seen'+h.tag);showRaceBanner('⭐ FAMOUS RIVAL: '+h.featured.name,2.1)}
-if(!h.hit&&Math.abs(-row.i*STEP-hero.root.position.z)<1.05&&Math.abs(h.x-hero.root.position.x)<1.35&&hero.root.position.y<.55){h.hit=true;finish('A rival horse knocked you off the track!');return}
-if(row.i===player.row-1&&!aiPassed.has(h.tag)){aiPassed.add(h.tag);overtakes++;if(h.featured&&!announcedRivals.has(h.tag)){announcedRivals.add(h.tag);showRaceBanner('🏆 OVERTAKEN: '+h.featured.name+'!',2.8)}if(overtakes%5===0)flash('🏆 '+overtakes+' OVERTAKES!')}
-if(row.i===player.row+1&&Math.abs(h.x-hero.root.position.x)<2.4){stamina=Math.min(100,stamina+dt*8)}}for(const p of row.pickups){p.obj.rotation.y+=dt*2.5;if(!p.got&&row.i===player.row&&Math.abs(p.x*1-hero.root.position.x)<1.5){p.got=true;row.g.remove(p.obj);coins++;stamina=Math.min(100,stamina+15);flash('🥕 CARROT +1')}}for(const o of row.obstacles){if(Math.abs(-row.i*STEP-hero.root.position.z)<1.05&&Math.abs(o.x-hero.root.position.x)<(o.r+0.35)){if(o.slow){stamina=Math.max(0,stamina-dt*20)}else{finish('You crashed into a trackside tree!');return}}}}
+if(!h.hit&&Math.abs(-row.i*STEP-hero.root.position.z)<1.05&&Math.abs(h.x-hero.root.position.x)<1.35&&hero.root.position.y<.55){h.hit=true;collisionOrShield('A rival horse knocked you off the track!');if(!run)return}
+if(row.i===player.row-1&&!aiPassed.has(h.tag)){aiPassed.add(h.tag);overtakes++;}
+if(row.i===player.row+1&&Math.abs(h.x-hero.root.position.x)<2.4){stamina=Math.min(100,stamina+dt*8)}}for(const p of row.pickups){p.obj.rotation.y+=dt*2.5;if(!p.got&&row.i===player.row&&Math.abs(p.x*1-hero.root.position.x)<1.5&&(p.trailId===undefined||Math.abs(-row.i*STEP-hero.root.position.z)<.90)){p.got=true;row.g.remove(p.obj);const value=p.golden?5:1;coins+=value;bankCarrot(value);stamina=Math.min(100,stamina+15);flash(p.golden?'✨ GOLDEN CARROT +5!':'🥕 CARROT +1');puff('carrot',hero.root.position.x,1.0,hero.root.position.z,p.golden?15:9);collectTrailCarrot(p)}}for(const o of row.obstacles){if(o.slow?Math.abs(-row.i*STEP-hero.root.position.z)<1.05&&Math.abs(o.x-hero.root.position.x)<(o.r+0.35):row.i===player.row&&o.tileX===player.x&&(hopT===0||hopT>=.8)){if(o.slow){stamina=Math.max(0,stamina-dt*20);if(elapsed>mudPuffCooldown){puff('mud',hero.root.position.x,.12,hero.root.position.z,4);mudPuffCooldown=elapsed+.27}}else{collisionOrShield('You crashed into a trackside tree!');if(!run)return}}}}
+if(!checkPlayerBales(oldCourseX,oldCourseZ))return;
 if(high-cameraProgress>2.2)cameraProgress+=(high-2.2-cameraProgress)*Math.min(1,dt*2.2);
 if(player.row<cameraProgress-9){finish('The race left you behind!');return}
 ensureRows();updateHUD()}
 let previous=performance.now();
-function frame(now){requestAnimationFrame(frame);const dt=Math.min(.05,(now-previous)/1000);previous=now;if(run)tick(dt);if($('raceBanner').style.display!=='none'&&elapsed>raceBannerUntil)$('raceBanner').style.display='none';animateWildlife(now/1000);animateConfetti(dt);drawAtmosphere(dt,now);setCamera();renderer.render(scene,camera)}
+function frame(now){requestAnimationFrame(frame);const dt=Math.min(.05,(now-previous)/1000);previous=now;if(run){tick(dt);if(run)updateRival(dt)}if($('raceBanner').style.display!=='none'&&elapsed>raceBannerUntil)$('raceBanner').style.display='none';animateWildlife(now/1000);animateScenery(now/1000);animateEffects(dt);animateConfetti(dt);drawAtmosphere(dt,now);setCamera();renderer.render(scene,camera)}
 window.addEventListener('resize',()=>{renderer.setSize(innerWidth,innerHeight);setCamera(true)});window.addEventListener('orientationchange',()=>{setTimeout(()=>{renderer.setSize(innerWidth,innerHeight);setCamera(true)},200)});
 chooseProgram();makeRow(0);for(let i=1;i<16;i++)makeRow(i);requestAnimationFrame(frame);
 }catch(e){console.error(e);fail(e.message||String(e))}

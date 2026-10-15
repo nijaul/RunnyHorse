@@ -16,24 +16,6 @@
 #coatChoices button.chosen{border-color:#ffd15c;background:#6a5130}
 #coatChoices button:disabled{opacity:.48;cursor:not-allowed}
 #coatHint{font-size:11px;color:#d6e9d1;margin-top:7px}
-#trophyOpen{display:block;margin:9px auto 0;background:#37533b;border:2px solid #caa45a;border-radius:10px;color:#ffe4a3;font-weight:800;padding:10px 15px;cursor:pointer}
-#trophyModal{display:none;position:fixed;inset:0;z-index:8;background:#0d211de8;align-items:center;justify-content:center;padding:15px}
-#trophyModal.visible{display:flex}
-#trophyPanel{width:min(470px,96vw);max-height:85vh;overflow-y:auto;background:#203c30;border:3px solid #d2a85c;border-radius:18px;padding:18px;box-shadow:0 18px 55px #0009}
-#trophyPanel h2{margin:0 0 6px;color:#ffdf83}
-#trophyList{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin:13px 0}
-.trophyItem{padding:11px 7px;border:1px solid #8cae88;border-radius:10px;background:#375a40;font-size:12px}
-.trophyItem.locked{opacity:.5;filter:grayscale(.9)}
-.trophyItem strong{display:block;margin:5px 0}
-#trophyClose{background:#e7b552;border:0;border-radius:9px;padding:10px 18px;font-weight:900;cursor:pointer}
-#dailyOpen{display:block;margin:8px auto 0;background:#3d6146;border:2px solid #d3ad64;border-radius:10px;color:#ffe7a5;font-weight:800;padding:10px 15px;cursor:pointer}
-#dailyModal{display:none;position:fixed;inset:0;z-index:9;background:#10251eea;align-items:center;justify-content:center;padding:15px}
-#dailyModal.visible{display:flex}
-#dailyPanel{background:#234234;border:3px solid #d4ad6c;border-radius:16px;padding:20px;width:min(420px,96vw);max-height:85vh;overflow:auto;box-shadow:0 15px 45px #0009}
-#dailyPanel h2{margin:0 0 8px;color:#ffe0a0}
-.dailyRow{padding:12px 6px;border-bottom:1px solid #ffffff35;font-size:14px;line-height:1.5}
-.dailyRow strong{color:#ffdf94}
-#dailyClose{margin-top:12px;padding:10px 18px;background:#e7b552;border:0;border-radius:8px;font-weight:900;cursor:pointer}
 #raceProgram{margin:10px auto;padding:10px;border:1px solid #e3c17a;border-radius:10px;background:#1a382b;color:#f8e5bc;font-size:12px;line-height:1.6;text-align:left;max-width:365px}
 #raceProgram strong{color:#ffdb79}#raceBanner{position:fixed;top:174px;left:50%;transform:translateX(-50%);z-index:3;padding:7px 12px;border:1px solid #f2d28e;border-radius:9px;background:#173429e8;color:#ffebc1;font-size:12px;font-weight:800;text-align:center;pointer-events:none;display:none;max-width:90vw}
 #weatherCanvas{position:fixed;inset:0;z-index:1;pointer-events:none;width:100%;height:100%}@media(max-width:540px){}
@@ -110,7 +92,7 @@ button{-webkit-tap-highlight-color:transparent}
 <p><b>Distance 50+: rolling hay.</b> Bales roll, slow down and pause. Wait for a gap; touching one ends the run.</p>
 <p><b>Distance 100+: hurdles.</b> Follow the mint arrows and hop <b>forward</b> to clear a hurdle automatically. Sideways or backward entry crashes. No new button.</p>
 <p><b>Distance 108+: carrot trails.</b> Follow the numbered 1–5 carrots for a <b>+5 bank bonus</b>. Look before crossing traffic. Trails are optional; collected carrots stay yours.</p>
-</details><div id="raceProgram"><strong>🏁 NEXT RACE</strong><div id="programDetails">Preparing the race program…</div></div><div id="stablePicker"><div class="stableTitle">🐴 YOUR RACING STABLE</div><div id="coatChoices"></div><div id="stableBank">🥕 Carrot Bank: <b id="bankBalance">0</b></div><div id="coatHint">Coats are cosmetic. All horses race identically.</div><button id="shopOpen" type="button">🥕 STABLE SHOP — COATS, OUTFITS & SADDLES</button></div><div id="crashShow" aria-live="polite"><span id="crashStars">✨ ⭐ ✨</span><div id="crashHorse">🐴💫</div><div id="crashQuip"></div></div><div id="showdownChoice"><button id="modeToggle" type="button">🏇 MODE: ENDLESS</button><span id="modeHelp">Classic endless derby</span></div><button id="start">START RACING →</button><button id="trophyOpen">🏆 TROPHY CABINET</button><button id="dailyOpen">📅 DAILY DERBY CHALLENGES</button></div></div><div id="trophyModal"><div id="trophyPanel"><h2>🏆 Derby Trophy Cabinet</h2><div id="trophySummary"></div><div id="trophyList"></div><button id="trophyClose">CLOSE</button></div></div><div id="dailyModal"><div id="dailyPanel"><h2>📅 Daily Derby Challenges</h2><p id="dailySummary"></p><div id="dailyList"></div><button id="dailyClose">CLOSE</button></div></div><div id="error"></div>
+</details><div id="raceProgram"><strong>🏁 NEXT RACE</strong><div id="programDetails">Preparing the race program…</div></div><div id="stablePicker"><div class="stableTitle">🐴 YOUR RACING STABLE</div><div id="coatChoices"></div><div id="stableBank">🥕 Carrot Bank: <b id="bankBalance">0</b></div><div id="coatHint">Coats are cosmetic. All horses race identically.</div><button id="shopOpen" type="button">🥕 STABLE SHOP — COATS, OUTFITS & SADDLES</button></div><div id="crashShow" aria-live="polite"><span id="crashStars">✨ ⭐ ✨</span><div id="crashHorse">🐴💫</div><div id="crashQuip"></div></div><div id="showdownChoice"><button id="modeToggle" type="button">🏇 MODE: ENDLESS</button><span id="modeHelp">Classic endless derby</span></div><button id="start">START RACING →</button></div></div><div id="error"></div>
 <script>
 (()=>{'use strict';
 const $=id=>document.getElementById(id);
@@ -957,8 +939,8 @@ function collectTrailCarrot(p){
   const hud=$('trailStatus');hud.hidden=false;
   if(trail.collected.size===COURSE.trailLength){
     trail.rewarded=true;
-    // Only the reward enters the bank. Original pickup counts still drive the
-    // original achievements and daily goals; a bonus is not a phantom pickup.
+    // Only the reward enters the bank; this bonus does not add phantom pickups
+    // to the run's carrot counter.
     bankCarrot(COURSE.trailReward);
     hud.textContent='TRAIL COMPLETE · +'+COURSE.trailReward+' TO YOUR BANK';
     trailHideAt=elapsed+3;
@@ -1152,107 +1134,6 @@ function renderStable(){
  $('coatHint').textContent='Selected: '+coatOptions[chosenCoat].name+' · Cosmetics only; no racing advantages.';
 }
 renderStable();
-// Persistent achievements are cosmetic-only; no racing physics are modified.
-const trophyDefinitions=[
-{id:'first',icon:'🏁',name:'First Steps',desc:'Reach distance 10',test:t=>t.distance>=10},
-{id:'quarter',icon:'🥉',name:'Derby Rookie',desc:'Reach distance 25',test:t=>t.distance>=25},
-{id:'half',icon:'🥈',name:'Seasoned Rider',desc:'Reach distance 50',test:t=>t.distance>=50},
-{id:'century',icon:'🥇',name:'Century Gallop',desc:'Reach distance 100',test:t=>t.distance>=100},
-{id:'legend',icon:'👑',name:'Derby Legend',desc:'Reach distance 250',test:t=>t.distance>=250},
-{id:'overtake5',icon:'💨',name:'Passing Lane',desc:'Overtake 5 horses in one run',test:t=>t.overtakes>=5},
-{id:'overtake20',icon:'⚡',name:'Track Dominator',desc:'Overtake 20 horses in one run',test:t=>t.overtakes>=20},
-{id:'carrot3',icon:'🥕',name:'Carrot Crunch',desc:'Collect 3 carrots in one run',test:t=>t.carrots>=3},
-{id:'carrot10',icon:'🌾',name:'Harvest Champion',desc:'Collect 10 carrots in one run',test:t=>t.carrots>=10},
-{id:'runs5',icon:'🐴',name:'Regular Racer',desc:'Finish 5 runs',test:t=>t.runs>=5},
-{id:'runs20',icon:'🏇',name:'Stable Veteran',desc:'Finish 20 runs',test:t=>t.runs>=20}
-];
-const trophyKey='gallophop-trophies-v1';
-let trophyData={unlocked:[],runs:0};
-try{
- const stored=JSON.parse(localStorage.getItem(trophyKey)||'null');
- if(stored&&Array.isArray(stored.unlocked))trophyData={unlocked:stored.unlocked,runs:Number(stored.runs)||0};
-}catch(e){}
-function persistTrophies(){try{localStorage.setItem(trophyKey,JSON.stringify(trophyData))}catch(e){}}
-function checkTrophies(){
- const totals={distance:high,overtakes,carrots:coins,runs:trophyData.runs};
- let newly=[];
- for(const a of trophyDefinitions)if(!trophyData.unlocked.includes(a.id)&&a.test(totals)){trophyData.unlocked.push(a.id);newly.push(a)}
- if(newly.length){persistTrophies();flash('🏆 TROPHY UNLOCKED: '+newly[newly.length-1].name)}
-}
-function showTrophies(){
- $('trophyList').replaceChildren();
- $('trophySummary').textContent=trophyData.unlocked.length+' / '+trophyDefinitions.length+' unlocked · '+trophyData.runs+' races completed';
- for(const a of trophyDefinitions){
-  const won=trophyData.unlocked.includes(a.id),tile=document.createElement('div');
-  tile.className='trophyItem'+(won?'':' locked');
-  const icon=document.createElement('div');icon.textContent=won?a.icon:'🔒';icon.style.fontSize='26px';
-  const name=document.createElement('strong');name.textContent=a.name;
-  const desc=document.createElement('div');desc.textContent=a.desc;
-  tile.append(icon,name,desc);$('trophyList').append(tile);
- }
- $('trophyModal').classList.add('visible');
-}
-$('trophyOpen').onclick=showTrophies;
-$('trophyClose').onclick=()=>$('trophyModal').classList.remove('visible');
-$('trophyModal').addEventListener('click',e=>{if(e.target===$('trophyModal'))$('trophyModal').classList.remove('visible')});
-
-// Optional daily goals: read-only observers of existing gameplay counters.
-const DAILY_KEY='gallophop-daily-v1';
-const todayKey=()=>{const d=new Date();return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0')};
-let daily={date:todayKey(),bestRun:0,overtakes:0,carrots:0,completed:[false,false,false],medals:0};
-try{
- const old=JSON.parse(localStorage.getItem(DAILY_KEY)||'null');
- if(old&&typeof old==='object'){
-  daily.medals=Number(old.medals)||0;
-  if(old.date===todayKey())daily={...daily,...old};
- }
-}catch(e){}
-const dailyGoals=[
- {label:'Reach distance 30 in one race',goal:30,get:()=>daily.bestRun},
- {label:'Overtake 15 rivals today',goal:15,get:()=>daily.overtakes},
- {label:'Collect 5 carrots today',goal:5,get:()=>daily.carrots}
-];
-function persistDaily(){try{localStorage.setItem(DAILY_KEY,JSON.stringify(daily))}catch(e){}}
-function resetDailyIfNeeded(){
- if(daily.date!==todayKey()){
-  daily={date:todayKey(),bestRun:0,overtakes:0,carrots:0,completed:[false,false,false],medals:daily.medals};
-  persistDaily();
- }
-}
-function renderDaily(){
- resetDailyIfNeeded();
- $('dailySummary').textContent='Today: '+daily.date+' · Total challenge medals: '+daily.medals+' · Resets at local midnight';
- const list=$('dailyList');list.replaceChildren();
- dailyGoals.forEach((goal,i)=>{
-  const div=document.createElement('div');div.className='dailyRow';
-  const amount=Math.min(goal.goal,goal.get());
-  const name=document.createElement('strong');name.textContent=(daily.completed[i]?'🏅 ':'○ ')+goal.label;
-  const info=document.createElement('div');info.textContent=amount+' / '+goal.goal+(daily.completed[i]?' · COMPLETE':'');
-  div.append(name,info);list.append(div);
- });
-}
-function updateDaily(){
- if(!run)return;
- resetDailyIfNeeded();
- let changed=false;
- const distance=Math.max(daily.bestRun,high);
- if(distance!==daily.bestRun){daily.bestRun=distance;changed=true}
- // Count gains during each run exactly once, even with repeated HUD updates.
- if(overtakes>dailyRunOvertakes){daily.overtakes+=overtakes-dailyRunOvertakes;dailyRunOvertakes=overtakes;changed=true}
- if(coins>dailyRunCarrots){daily.carrots+=coins-dailyRunCarrots;dailyRunCarrots=coins;changed=true}
- dailyGoals.forEach((g,i)=>{
-  if(!daily.completed[i]&&g.get()>=g.goal){
-   daily.completed[i]=true;daily.medals++;changed=true;
-   flash('🏅 DAILY CHALLENGE COMPLETE!');
-  }
- });
- if(changed)persistDaily();
-}
-let dailyRunOvertakes=0,dailyRunCarrots=0;
-$('dailyOpen').onclick=()=>{renderDaily();$('dailyModal').classList.add('visible')};
-$('dailyClose').onclick=()=>$('dailyModal').classList.remove('visible');
-$('dailyModal').addEventListener('click',e=>{if(e.target===$('dailyModal'))$('dailyModal').classList.remove('visible')});
-
 // Optional head-to-head showdown. The rival uses the same generated world,
 // grid coordinates, and lethal obstacle checks; it never changes row generation.
 let showdown=false,rival=null;
@@ -1330,9 +1211,9 @@ function updateRival(dt){
  // Rival is not allowed to pull the camera or alter the existing terrain stream.
  if(a.row>high+KEEP_AHEAD-3)a.stepClock=Math.max(a.stepClock,.25);
 }
-function start(){resetCourseAdditions();$('crashShow').classList.remove('visible');clearEffects();mudPuffCooldown=0;announcedIntensityBand=-1;rerollVisualWorld();chooseProgram();resetDailyIfNeeded();dailyRunOvertakes=0;dailyRunCarrots=0;for(const p of derbyConfetti)scene.remove(p.mesh);derbyConfetti=[];moveQueue.length=0;for(let row of rows.values())disposeRow(row);rows.clear();if(hero)scene.remove(hero.root);hero=horse(scene,coatOptions[chosenCoat].coat,coatOptions[chosenCoat].shirt);decorateHorse(hero);player={x:0,row:0};hero.root.position.set(0,0,0);hero.root.rotation.y=0;heroTargetAngle=0;celebrateUntil=0;celebratedRow=0;high=0;cameraProgress=0;elapsed=0;hopT=0;lastMove=0;coins=0;overtakes=0;stamina=100;aiPassed.clear();run=true;dead=false;ensureRows();startRival();$('menu').style.display='none';showRaceBanner('🏁 '+raceProgram.name+' · Watch for '+raceProgram.featured.name+'!',4);updateHUD();setCamera(true)}
-function updateHUD(){if(run){checkTrophies();updateDaily()}$('distance').textContent=high;$('overtakes').textContent=overtakes;$('coins').textContent=coins;$('best').textContent=Math.max(best,high);$('status').textContent=stamina<20?'LOW STAMINA — COLLECT CARROTS!':'🏇 THE GRAND DERBY CROSSING'}
-function finish(reason){if(!run)return;$('trailStatus').hidden=true;if(showdown&&!reason.includes('YOU WIN'))reason='🤖 RIVAL WINS! '+reason;crashPresentation(reason);run=false;dead=true;$('rivalHud').style.display='none';trophyData.runs++;checkTrophies();persistTrophies();if(high>best){best=high;try{localStorage.setItem('gallophop-best-v2',best)}catch(e){}}$('title').innerHTML='RACE<br>OVER';$('description').innerHTML=reason+'<br><br>Distance: <b>'+high+'</b> · Overtakes: <b>'+overtakes+'</b> · Carrots: <b>'+coins+'</b><br>Best distance: <b>'+best+'</b>';$('start').textContent='RACE AGAIN →';$('menu').style.display='flex';chooseProgram();renderStable();updateHUD()}
+function start(){resetCourseAdditions();$('crashShow').classList.remove('visible');clearEffects();mudPuffCooldown=0;announcedIntensityBand=-1;rerollVisualWorld();chooseProgram();for(const p of derbyConfetti)scene.remove(p.mesh);derbyConfetti=[];moveQueue.length=0;for(let row of rows.values())disposeRow(row);rows.clear();if(hero)scene.remove(hero.root);hero=horse(scene,coatOptions[chosenCoat].coat,coatOptions[chosenCoat].shirt);decorateHorse(hero);player={x:0,row:0};hero.root.position.set(0,0,0);hero.root.rotation.y=0;heroTargetAngle=0;celebrateUntil=0;celebratedRow=0;high=0;cameraProgress=0;elapsed=0;hopT=0;lastMove=0;coins=0;overtakes=0;stamina=100;aiPassed.clear();run=true;dead=false;ensureRows();startRival();$('menu').style.display='none';showRaceBanner('🏁 '+raceProgram.name+' · Watch for '+raceProgram.featured.name+'!',4);updateHUD();setCamera(true)}
+function updateHUD(){$('distance').textContent=high;$('overtakes').textContent=overtakes;$('coins').textContent=coins;$('best').textContent=Math.max(best,high);$('status').textContent=stamina<20?'LOW STAMINA — COLLECT CARROTS!':'🏇 THE GRAND DERBY CROSSING'}
+function finish(reason){if(!run)return;$('trailStatus').hidden=true;if(showdown&&!reason.includes('YOU WIN'))reason='🤖 RIVAL WINS! '+reason;crashPresentation(reason);run=false;dead=true;$('rivalHud').style.display='none';if(high>best){best=high;try{localStorage.setItem('gallophop-best-v2',best)}catch(e){}}$('title').innerHTML='RACE<br>OVER';$('description').innerHTML=reason+'<br><br>Distance: <b>'+high+'</b> · Overtakes: <b>'+overtakes+'</b> · Carrots: <b>'+coins+'</b><br>Best distance: <b>'+best+'</b>';$('start').textContent='RACE AGAIN →';$('menu').style.display='flex';chooseProgram();renderStable();updateHUD()}
 function move(dir){if(!run)return;
 if(hopT>0){if(moveQueue.length<MAX_QUEUED_MOVES)moveQueue.push(dir);return}
 let nx=player.x,nr=player.row;if(dir==='forward')nr++;else if(dir==='back')nr=Math.max(0,nr-1);else if(dir==='left')nx--;else if(dir==='right')nx++;// The playable track is INSIDE the rails at x = +/-12.2 world units.
